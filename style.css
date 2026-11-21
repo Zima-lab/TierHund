@@ -302,9 +302,60 @@ footer.note2 { margin-top: 26px; font-size: var(--fs-xs); color: var(--muted); b
 :focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce){ * { animation: none !important; transition: none !important; } }
 
-/* ============ 13. DESKTOP ============ */
+/* ============ 13. LAYOUT DESKTOP (≥1024px) ============
+   Stesso schema dell'attuale Wortabolario: fascia in alto con nome, controlli e ricerca a tutta
+   larghezza; sotto, menu laterale a sinistra (è la tab bar, girata in verticale) e contenuto a destra.
+   Sotto i 1024px non cambia nulla. Il valore va tenuto uguale a desktopMQ in js/app.js.
+   La griglia è sul body: .wrap usa display:contents, così intestazione, ricerca, <main> e tab bar
+   diventano celle della stessa griglia. */
 @media (min-width: 1024px){
-  .wrap { max-width: 980px; }
-  .tabbar { left: 50%; right: auto; transform: translateX(-50%); bottom: 14px; border: 1px solid var(--border); border-radius: 16px; width: 520px; padding: 6px; box-shadow: var(--e3); }
-  body { padding-bottom: 100px; }
+  body {
+    --band-pad: max(32px, calc((100vw - 1440px) / 2));
+    --side-w: clamp(200px, 18vw, 264px);
+    display: grid;
+    grid-template-columns: calc(var(--band-pad) + var(--side-w)) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    min-height: 100vh;
+    padding-bottom: 0;
+  }
+  body::before { content: ""; grid-column: 1 / -1; grid-row: 1 / 3; background: var(--card); border-bottom: 1px solid var(--border); }
+  .wrap { display: contents; }
+
+  /* Intestazione: nome + sottotitolo sulla stessa riga, controlli a destra */
+  header.top { grid-column: 1 / -1; grid-row: 1; margin: 0; padding: 22px var(--band-pad) 0; }
+  .header-row { align-items: center; }
+  .header-row > div:first-child { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; min-width: 0; }
+  header.top h1 { font-size: var(--fs-4xl); line-height: 1.1; }
+  header.top p.sub { font-size: var(--fs-sm); margin: 0; }
+  .toggles { align-items: center; gap: 10px; margin-top: 0; }
+  .prova-btn { min-height: 43px; padding: 0 18px; }
+
+  /* Ricerca: sempre visibile, a tutta larghezza */
+  .searchbar { grid-column: 1 / -1; grid-row: 2; position: relative; top: auto; margin: 18px var(--band-pad) 20px; background: var(--surface-alt); box-shadow: none; padding: 14px 18px; }
+  .searchbar.hidden { display: flex !important; }
+  .searchbar:focus-within { background: var(--card); }
+  .suggest-list { left: -18px; right: -18px; }
+
+  /* Menu laterale (la tab bar in verticale) */
+  .tabbar {
+    grid-column: 1; grid-row: 3; position: sticky; top: 0; bottom: auto; left: auto; right: auto; transform: none; z-index: 20;
+    align-self: start; flex-direction: column; gap: 4px; width: auto; min-height: calc(100vh - 170px);
+    background: transparent; box-shadow: none; border: none; border-right: 1px solid var(--border); border-radius: 0;
+    padding: 28px 18px 28px var(--band-pad);
+  }
+  .tabbar .tab { flex: none; flex-direction: row; justify-content: flex-start; gap: 14px; min-height: 52px; padding: 12px 18px; font-size: var(--fs-base); font-weight: 700; color: var(--text); }
+  .tabbar .tab .ic { width: 21px; height: 21px; }
+  .tabbar .tab:hover:not(.active) { background: var(--surface-alt); }
+  .tabbar .tab.active { color: var(--navy); background: var(--navy-light); font-weight: 800; }
+
+  /* Contenuto principale */
+  main.main { grid-column: 2; grid-row: 3; min-width: 0; width: 100%; max-width: calc(1120px + 96px); padding: 32px 48px 60px; }
+  .home { gap: 18px; }
+  .panel { padding: 20px 22px; border-radius: 16px; }
+  .mod-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .quick { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .filters { flex-wrap: wrap; overflow: visible; }
+  .back-top { bottom: 24px; right: 24px; }
+  .sheet { max-width: 900px; height: auto; max-height: calc(100% - 48px); border-radius: 18px; }
+  .overlay { align-items: center; }
 }
