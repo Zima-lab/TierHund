@@ -84,6 +84,7 @@ header.top h1 { font-size: clamp(1.25rem, 5.5vw, 1.5rem); color: var(--navy-dark
 header.top h1 .paw { color: var(--accent); width: 1em; height: 1em; }
 header.top p.sub { margin: 2px 0 0; color: var(--muted); font-size: var(--fs-xs); }
 .toggles { display: flex; gap: 6px; flex-shrink: 0; margin-top: 2px; }
+.prova-btn { min-height: 0; padding: 7px 14px; border-radius: 999px; font-size: var(--fs-sm); background: var(--card); box-shadow: var(--e1); }
 .theme-toggle { display: flex; border: 1.5px solid var(--border); border-radius: 999px; cursor: pointer; background: var(--card); padding: 2px; box-shadow: var(--e1); }
 .theme-toggle .opt { padding: 8px 11px; border-radius: 999px; color: var(--muted); display: inline-flex; }
 .theme-toggle .opt.active { background: var(--fill-active); color: #fff; }
@@ -221,6 +222,7 @@ header.top p.sub { margin: 2px 0 0; color: var(--muted); font-size: var(--fs-xs)
 
 /* ============ 10. QUIZ ============ */
 .btn { border: none; background: var(--fill-active); color: #fff; border-radius: 10px; padding: 11px 18px; font-weight: 700; cursor: pointer; min-height: 44px; font-size: var(--fs-base); }
+a.btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 .btn:disabled { opacity: .45; cursor: default; }
 .btn.ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--border); }
 .modes { display: grid; gap: 10px; }
