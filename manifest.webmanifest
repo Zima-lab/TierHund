@@ -1,0 +1,11 @@
+{
+  "id": "./",
+  "name": "TierHund – Prontuario § 11 TierSchG",
+  "short_name": "TierHund",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#191f56",
+  "lang": "it",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

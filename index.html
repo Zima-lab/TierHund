@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TierHund">
+<meta name="theme-color" content="#191f56">
+<title>TierHund — Prontuario Sachkunde § 11 TierSchG · Hund</title>
+<meta name="description" content="Prontuario tedesco ↔ italiano per la Sachkundeprüfung § 11 TierSchG (cani): norme, numeri, concetti, quiz e simulazione d'esame.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem("tierhund_theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="header-row">
+      <div>
+        <h1><span id="logo"></span>TierHund</h1>
+        <p class="sub">Prontuario Sachkunde § 11 TierSchG · Hund — tedesco ↔ italiano</p>
+      </div>
+      <div class="toggles">
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Tema chiaro / scuro">
+          <span class="opt" data-theme="light" data-icon="sun"></span><span class="opt" data-theme="dark" data-icon="moon"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="searchbar" id="searchbar">
+    <span data-icon="search"></span>
+    <div class="search-input-wrap">
+      <input type="text" id="search" placeholder="Cerca in tedesco o italiano… (es. „Zwinger“, „65 km“, „cimurro“)"
+        role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestList" autocomplete="off" spellcheck="false">
+      <button type="button" id="clearBtn" class="clear-btn" aria-label="Cancella ricerca" hidden data-icon="close"></button>
+      <div id="suggestList" class="suggest-list" role="listbox" hidden></div>
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <main id="main">
+    <section id="v-home" class="home"></section>
+
+    <section id="v-cerca" class="hidden">
+      <div class="filters" id="modFilters" aria-label="Filtra per modulo"></div>
+      <div class="filters" id="typeFilters" aria-label="Filtra per tipo"></div>
+      <div id="results"></div>
+    </section>
+
+    <section id="v-ripasso" class="hidden"></section>
+
+    <section id="v-preferiti" class="hidden"></section>
+
+    <footer class="note2">
+      Schede prese dai riassunti DE-IT dei moduli del Vorbereitungskurs IHK Potsdam (Rechtsvorschriften e Tiertransport: Avv. A. Lobert;
+      Modulo 2a–2c: Dr. K. Voigt, Dr. B. Schöning · bhv). Il tedesco è quello delle slide. Le parti con <b>⚑</b> sono note aggiunte, non presenti nelle slide:
+      vanno verificate prima di usarle all'esame. Traduzione non ufficiale, solo per studio.
+    </footer>
+    <div class="app-version" id="appVersion"></div>
+  </main>
+</div>
+
+<button type="button" id="backTop" class="back-top" aria-label="Torna su" hidden data-icon="arrowUp"></button>
+
+<nav class="tabbar" role="tablist" aria-label="Navigazione principale">
+  <button type="button" class="tab active" data-tab="home" role="tab"><span data-icon="home"></span><span>Casa</span></button>
+  <button type="button" class="tab" data-tab="cerca" role="tab"><span data-icon="search"></span><span>Cerca</span></button>
+  <button type="button" class="tab" data-tab="ripasso" role="tab"><span data-icon="target"></span><span>Ripasso</span></button>
+  <button type="button" class="tab" data-tab="preferiti" role="tab"><span data-icon="star"></span><span>Preferiti</span></button>
+</nav>
+
+<div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="sheetTitle"></h2>
+      <span id="sheetExtra"></span>
+      <button type="button" id="sheetClose" class="sheet-close" aria-label="Chiudi" data-icon="close"></button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- Dati (il contenuto): per correggere una scheda si tocca solo dati/ -->
+<script src="dati/recht.js"></script>
+<script src="dati/transport.js"></script>
+<script src="dati/hunde2a.js"></script>
+<script src="dati/hunde2bc.js"></script>
+<script src="dati/quiz.js"></script>
+<!-- Logica -->
+<script src="js/app.js"></script>
+<script src="js/ripasso.js"></script>
+</body>
+</html>
