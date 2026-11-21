@@ -367,12 +367,16 @@ function importBackup(ev){
   r.readAsText(f);
 }
 
-/* ---------- NAVIGAZIONE ---------- */
+/* ---------- NAVIGAZIONE ----------
+   Su desktop (≥1024px) la tab bar diventa un menu laterale e la ricerca resta sempre visibile
+   (come l'attuale Wortabolario). Il valore deve coincidere con la sez. 13 di style.css. */
+const desktopMQ = typeof window.matchMedia === "function" ? window.matchMedia("(min-width: 1024px)") : { matches: false };
+function isDesktop(){ return !!desktopMQ.matches; }
 function switchTab(t){
   activeTab = t;
   document.querySelectorAll(".tabbar .tab").forEach(b => { const on = b.dataset.tab === t; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
   ["home","cerca","ripasso","preferiti"].forEach(v => $("v-" + v).classList.toggle("hidden", v !== t));
-  $("searchbar").classList.toggle("hidden", t === "ripasso");
+  $("searchbar").classList.toggle("hidden", t === "ripasso" && !isDesktop());
   if(t === "home") renderHome();
   if(t === "cerca"){ renderFilters(); renderResults(); }
   if(t === "ripasso" && typeof renderRipasso === "function") renderRipasso();
