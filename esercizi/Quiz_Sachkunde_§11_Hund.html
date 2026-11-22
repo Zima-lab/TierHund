@@ -144,7 +144,7 @@ kbd{font-family:inherit;font-size:.8rem;border:1px solid var(--line);border-bott
   <div class="modes">
     <button class="mode" id="m-sim" type="button">
       <h2>Simulazione d'esame</h2>
-      <p>30 crocette + 5 domande aperte da tutti gli argomenti, 60 minuti. Correzione solo alla fine, come all'esame.</p>
+      <p>30 crocette + 5 domande aperte da tutti gli argomenti, 60 minuti, senza aiuti. Correzione solo alla fine. Per passare serve il 70 %, come all'esame IHK.</p>
       <span class="go">Inizia →</span>
     </button>
     <button class="mode" id="m-train" type="button">
@@ -936,10 +936,13 @@ const Q = [
     const ans = S.answers;
     const total = ans.length;
     const pts = ans.reduce(function(s,a){ return s+a.score; },0);
-    const pct = total ? Math.round(pts/total*100) : 0;
+    const denom = S.mode==="sim" ? S.list.length : total;
+    const pct = denom ? Math.round(pts/denom*100) : 0;
+    const PASS = 70;
     if(S.mode==="sim"){ store.last = pct; save(store); }
     $("r-pct").textContent = pct + " %";
-    $("r-title").textContent = S.mode==="sim" ? "Simulazione finita" : "Allenamento finito";
+    $("r-title").textContent = S.mode==="sim" ? (pct>=PASS ? "Superata (soglia 70 %)" : "Non superata (soglia 70 %)") : ("Allenamento finito · " + (pct>=PASS ? "sopra" : "sotto") + " il 70 %");
+    $("r-pct").style.color = pct>=PASS ? "var(--good)" : "var(--bad)";
     const missedCount = ans.filter(function(a){return a.score<1;}).length;
     $("r-sub").textContent = (Math.round(pts*10)/10).toString().replace(".",",") + " punti su " + total + " domande risposte" + (total < S.list.length ? " (su " + S.list.length + ")" : "") + " · " + missedCount + " da rivedere";
     // per category
