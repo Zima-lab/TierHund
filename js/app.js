@@ -2,7 +2,7 @@
    Icone, stato salvato, ricerca, schede, Casa, Preferiti, tabella dei numeri, navigazione.
    Il ripasso (flashcard, quiz, simulazione) è in js/ripasso.js. */
 
-const APP_VERSION = "v1 · 21.11.2026";
+const APP_VERSION = "v2 · 23.11.2026";
 const EXAM_DATE = new Date("2026-11-23T10:30:00+01:00");
 
 /* ---------- ICONE (stesso disegno di Wortabolario) ---------- */
