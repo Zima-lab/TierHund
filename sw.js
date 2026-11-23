@@ -2,7 +2,7 @@
    Aprendo index.html direttamente dal disco non serve: i file sono già lì.
    Strategia: prima la rete (così gli aggiornamenti arrivano subito), la cache solo se si è offline.
    Cambiare CACHE a ogni modifica importante dei file. */
-const CACHE = "tierhund-v2";
+const CACHE = "tierhund-v3";
 const FILES = ["./","index.html","fonts.css","style.css","icon.svg","manifest.webmanifest",
   "js/app.js","js/ripasso.js","dati/recht.js","dati/transport.js","dati/hunde2a.js","dati/hunde2bc.js","dati/quiz.js",
   "esercizi/Quiz_Sachkunde.html"];

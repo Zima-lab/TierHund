@@ -3,7 +3,10 @@
    Il ripasso (flashcard, quiz, simulazione) è in js/ripasso.js. */
 
 const APP_VERSION = "v2 · 23.11.2026";
-const EXAM_DATE = new Date("2026-11-23T10:30:00+01:00");
+// Esame: marzo 2027, giorno non ancora fissato. Quando c'è la data: metterla qui e impostare EXAM_DAY_KNOWN = true.
+const EXAM_DATE = new Date("2027-03-01T10:30:00+01:00");
+const EXAM_DAY_KNOWN = false;
+const EXAM_LABEL = EXAM_DAY_KNOWN ? EXAM_DATE.toLocaleDateString("it-IT", {weekday:"long", day:"2-digit", month:"2-digit", year:"numeric"}) + ", ore " + EXAM_DATE.toLocaleTimeString("it-IT", {hour:"2-digit", minute:"2-digit"}) : "marzo 2027 · giorno da confermare";
 
 /* ---------- ICONE (stesso disegno di Wortabolario) ---------- */
 const ICONS = {
@@ -245,9 +248,14 @@ function daysToExam(){
 }
 function examText(){
   const d = daysToExam();
+  if(!EXAM_DAY_KNOWN){
+    if(d > 1) return [String(d), "giorni all'inizio di marzo"];
+    if(d >= -30) return ["Marzo", "esame questo mese"];
+    return ["✓", "esame passato"];
+  }
   if(d > 1) return [String(d), "giorni all'esame"];
   if(d === 1) return ["1", "giorno: l'esame è domani"];
-  if(d === 0) return ["Oggi", "esame alle 10:30"];
+  if(d === 0) return ["Oggi", "esame alle " + EXAM_DATE.toLocaleTimeString("it-IT", {hour:"2-digit", minute:"2-digit"})];
   return ["✓", "esame passato"];
 }
 function dailyEntry(){
@@ -263,7 +271,7 @@ function renderHome(){
   const daily = dailyEntry();
   $("v-home").innerHTML = `
     <div class="panel exam-card">
-      <div><h2>Sachkundeprüfung § 11</h2><div class="lbl">IHK Potsdam · lunedì 23.11.2026, ore 10:30</div></div>
+      <div><h2>Sachkundeprüfung § 11</h2><div class="lbl">IHK Potsdam · ${EXAM_LABEL}</div></div>
       <div style="text-align:right"><div class="big">${big}</div><div class="lbl">${lbl}</div></div>
     </div>
     <div class="panel">
