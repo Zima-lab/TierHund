@@ -1,6 +1,6 @@
 /* TierHund — js/ripasso.js
    Tab «Ripasso»: quiz (simulazione d'esame, allenamento, errori) e flashcard delle schede.
-   La logica del quiz è quella di Quiz_Sachkunde_§11_Hund.html, con le stesse domande (dati/quiz.js). */
+   La logica del quiz è quella di esercizi/Quiz_Sachkunde.html (versione precedente), con le stesse domande (dati/quiz.js). */
 
 QUIZ.forEach((q, i) => { q.id = q.c + "-" + i; });
 const Q_BY_ID = {}; QUIZ.forEach(q => Q_BY_ID[q.id] = q);

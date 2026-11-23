@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -121,6 +121,48 @@ textarea{width:100%;min-height:130px;font:inherit;padding:10px 12px;border:1px s
 kbd{font-family:inherit;font-size:.8rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
 @media (max-width:520px){.stats{grid-template-columns:1fr 1fr 1fr}.stat b{font-size:1.15rem}.cat{grid-template-columns:110px 1fr 3em}}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+/* Ergänzung 23.11.2026: Simulation im Prüfungsformat */
+.stats{grid-template-columns:repeat(4,1fr)}
+.rules ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:.93rem}
+.panel+.panel{margin-top:14px}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.flagmark{color:var(--warn);font-weight:700;font-size:.85rem}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.navrow.end{justify-content:flex-end;margin-bottom:70px}
+.flagbtn.on{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.ovbtn{position:fixed;left:16px;bottom:16px;z-index:20;font:inherit;font-family:var(--display);font-weight:700;background:var(--ink);color:var(--bg);border:0;border-radius:10px;padding:10px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.ovbtn small{font-family:var(--body);font-weight:400;opacity:.8;margin-left:6px}
+.modal{position:fixed;inset:0;z-index:30;background:rgba(10,15,12,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.sheet{background:var(--surface);border-radius:14px;padding:18px;width:100%;max-width:760px;max-height:85vh;overflow:auto}
+.small-sheet{max-width:460px;align-self:center}
+.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tab{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.tab.on{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.tab small{opacity:.75;margin-left:3px}
+.legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.lg{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:4px;border:1.5px solid var(--line);background:var(--bg);font-size:.7rem;color:var(--warn)}
+.lg.done{background:var(--accent-soft);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.cell{position:relative;font:inherit;text-align:left;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px 10px;cursor:pointer;display:grid;gap:2px}
+.cell b{font-family:var(--display);font-size:1.05rem}
+.cell small{color:var(--muted);font-size:.72rem}
+.cell.done{background:var(--accent-soft);border-color:var(--accent)}
+.cell.flag{border-color:var(--warn)}
+.cell.cur{outline:3px solid var(--ink);outline-offset:1px}
+.cell i{position:absolute;top:6px;right:8px;font-style:normal;color:var(--warn);font-weight:700}
+.gitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:14px}
+.gp{font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums}
+.lbl{color:var(--muted);font-size:.82rem;margin:10px 0 4px}
+.yours{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.sboxes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sbox{border-radius:10px;padding:14px;display:grid;gap:4px;border:1px solid var(--line)}
+.sbox.ok{background:var(--good-soft);border-color:var(--good)}
+.sbox.no{background:var(--bad-soft);border-color:var(--bad)}
+.sbox b{font-family:var(--display);font-size:2.4rem;line-height:1.05;font-variant-numeric:tabular-nums}
+.sbox.ok strong{color:var(--good)} .sbox.no strong{color:var(--bad)}
+.sbox .lbl{margin:0;font-weight:700;color:var(--ink)}
+@media (max-width:520px){.stats{grid-template-columns:1fr 1fr}.sboxes{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -128,82 +170,146 @@ kbd{font-family:inherit;font-size:.8rem;border:1px solid var(--line);border-bott
 <header>
   <div>
     <h1>Quiz Sachkunde § 11 – Hund</h1>
-    <div class="sub">Esame IHK Potsdam · 23.11.2026 · domande in tedesco, come all'esame</div>
+    <div class="sub">IHK Potsdam · Prüfungsformat: 36 Fragen, 60 Minuten, 1 – 12 Punkte je Frage, Bestehen ab 70 %</div>
   </div>
-  <div class="countdown" id="countdown"></div>
 </header>
 
 <!-- START -->
 <section id="v-start">
   <div class="stats">
-    <div class="stat"><b id="s-total">0</b><span>domande nel quiz</span></div>
-    <div class="stat"><b id="s-wrong">0</b><span>errori da ripassare</span></div>
-    <div class="stat"><b id="s-last">–</b><span>ultima simulazione</span></div>
+    <div class="stat"><b id="s-total">0</b><span>Fragen im Quiz</span></div>
+    <div class="stat"><b id="s-open">0</b><span>davon offen</span></div>
+    <div class="stat"><b id="s-wrong">0</b><span>Fehler zum Wiederholen</span></div>
+    <div class="stat"><b id="s-last">–</b><span>letzte Simulation (mit Abzug)</span></div>
   </div>
 
   <div class="modes">
     <button class="mode" id="m-sim" type="button">
-      <h2>Simulazione d'esame</h2>
-      <p>30 crocette + 5 domande aperte da tutti gli argomenti, 60 minuti, senza aiuti. Correzione solo alla fine. Per passare serve il 70 %, come all'esame IHK.</p>
-      <span class="go">Inizia →</span>
+      <h2>Prüfungssimulation</h2>
+      <p>36 Fragen wie in der Prüfung: 25 offene und 11 Auswahlfragen, 60 Minuten. Vor- und zurückblättern, Fragen markieren, Übersicht unten links, Abgabe am Ende. Danach bewerten Sie Ihre offenen Antworten mit der Musterlösung.</p>
+      <span class="go">Starten →</span>
     </button>
     <button class="mode" id="m-train" type="button">
-      <h2>Allenamento</h2>
-      <p>Argomenti scelti qui sotto. Correzione e spiegazione subito dopo ogni risposta.</p>
-      <span class="go">Inizia →</span>
+      <h2>Lernmodus</h2>
+      <p>Themen und Fragetyp unten wählen. Lösung und Erklärung direkt nach jeder Frage.</p>
+      <span class="go">Starten →</span>
     </button>
     <button class="mode" id="m-err" type="button">
-      <h2>Ripassa gli errori</h2>
-      <p id="m-err-p">Le domande sbagliate in precedenza. Escono dalla lista quando rispondi giusto.</p>
-      <span class="go">Inizia →</span>
+      <h2>Fehler wiederholen</h2>
+      <p id="m-err-p"></p>
+      <span class="go">Starten →</span>
     </button>
   </div>
 
   <div class="panel">
-    <h3>Argomenti per l'allenamento</h3>
+    <h3>Lernmodus: Themen</h3>
     <div class="chips" id="chips"></div>
     <div class="row">
-      <label for="n-sel">Numero di domande
-        <select id="n-sel"><option value="10">10</option><option value="20" selected>20</option><option value="40">40</option><option value="0">tutte</option></select>
+      <label for="n-sel">Anzahl
+        <select id="n-sel"><option value="10">10</option><option value="20" selected>20</option><option value="40">40</option><option value="0">alle</option></select>
       </label>
-      <label for="open-chk"><input type="checkbox" id="open-chk" checked> includi domande aperte</label>
-      <button class="btn ghost" type="button" id="all-btn">Tutti / nessuno</button>
+      <label for="type-sel">Fragetyp
+        <select id="type-sel"><option value="all">alle</option><option value="open">nur offene</option><option value="mc">nur Auswahl</option></select>
+      </label>
+      <button class="btn ghost" type="button" id="all-btn">Alle / keine</button>
     </div>
   </div>
-  <p class="small" style="margin-top:14px">Tasti: <kbd>1</kbd>–<kbd>5</kbd> scegli la risposta · <kbd>Invio</kbd> controlla / avanti. I progressi restano solo in questo browser.</p>
+
+  <div class="panel rules">
+    <h3>So wird gewertet</h3>
+    <ul>
+      <li>Jede Frage hat feste Punkte (1 – 12). Bei Auswahlfragen können eine oder mehrere Antworten richtig sein; die Frage zählt nur, wenn alle richtigen und keine falschen gewählt sind.</li>
+      <li>Offene Fragen: Punkte nach den Bewertungspunkten der Musterlösung. Bei „Begründen Sie“ zählt auch das Warum.</li>
+      <li><b>Mit Abzug:</b> falsche und leere Antworten kosten ihre Punkte. <b>Ohne Abzug:</b> nur richtige Punkte zählen. Sie sehen beide Werte – die genaue Regel der IHK ist nicht bestätigt.</li>
+      <li>Leere Antworten zählen nie als richtig: Schreiben Sie bei jeder Frage etwas.</li>
+    </ul>
+  </div>
+  <p class="small" style="margin-top:14px">Tasten: <kbd>1</kbd>–<kbd>9</kbd> Antwort wählen · <kbd>←</kbd> <kbd>→</kbd> blättern (Simulation) · <kbd>Enter</kbd> weiter. Fehler und Verlauf bleiben nur in diesem Browser gespeichert.</p>
 </section>
 
-<!-- QUIZ -->
+<!-- SIMULATION -->
+<section id="v-exam" class="hidden">
+  <div class="top">
+    <span id="e-count"></span>
+    <span class="timer" id="e-timer"></span>
+    <button class="btn ghost" type="button" id="e-quit">Abbrechen</button>
+  </div>
+  <div class="bar"><i id="e-bar" style="width:0"></i></div>
+  <div class="small" style="margin:-8px 0 12px">Gesamt: <span id="e-total"></span> Punkte</div>
+  <div class="card" id="e-card"></div>
+  <div class="navrow">
+    <button class="btn ghost" type="button" id="e-prev">← Zurück</button>
+    <button class="btn ghost flagbtn" type="button" id="e-flag">⚑ Markieren</button>
+    <button class="btn" type="button" id="e-next">Weiter →</button>
+  </div>
+  <div class="navrow end"><button class="btn ghost" type="button" id="e-submit">Prüfung abgeben</button></div>
+</section>
+
+<!-- KORREKTUR -->
+<section id="v-grade" class="hidden">
+  <h2>Korrektur der offenen Fragen</h2>
+  <p class="sub" id="g-intro"></p>
+  <div id="g-list"></div>
+  <div class="actions"><span></span><button class="btn" type="button" id="g-done">Auswertung anzeigen</button></div>
+</section>
+
+<!-- LERNMODUS -->
 <section id="v-quiz" class="hidden">
   <div class="top">
     <span id="q-count"></span>
-    <span class="timer hidden" id="timer"></span>
-    <button class="btn ghost" type="button" id="quit">Termina</button>
+    <button class="btn ghost" type="button" id="quit">Beenden</button>
   </div>
   <div class="bar"><i id="q-bar" style="width:0"></i></div>
   <div class="card" id="q-card"></div>
 </section>
 
-<!-- RESULT -->
+<!-- ERGEBNIS -->
 <section id="v-result" class="hidden">
   <div class="card">
-    <div class="score"><b id="r-pct"></b><div><h2 id="r-title"></h2><div class="sub" id="r-sub"></div></div></div>
+    <h2 id="r-title"></h2>
+    <div class="sub" id="r-sub"></div>
+    <div class="sboxes" id="r-boxes"></div>
+    <h3 style="margin-top:18px">Punkte nach Thema (ohne Abzug)</h3>
     <div class="cats" id="r-cats"></div>
     <div class="actions">
-      <button class="btn" type="button" id="r-again">Ripassa gli errori di questo giro</button>
-      <button class="btn ghost" type="button" id="r-home">Torna all'inizio</button>
+      <button class="btn" type="button" id="r-again">Diese Fehler wiederholen</button>
+      <button class="btn ghost" type="button" id="r-home">Zur Startseite</button>
     </div>
   </div>
-  <h2 style="margin-top:24px" id="r-rev-h">Da rivedere</h2>
+  <h2 style="margin-top:24px" id="r-rev-h">Nicht voll richtig</h2>
   <div class="review" id="r-review"></div>
 </section>
 </div>
 
+<!-- Übersicht-Button (unten links, nur in der Simulation) -->
+<button type="button" class="ovbtn hidden" id="ov-btn">☰ Übersicht</button>
+
+<!-- Übersicht -->
+<div class="modal hidden" id="ov" role="dialog" aria-modal="true" aria-labelledby="ov-h">
+  <div class="sheet">
+    <div class="sheethead"><h2 id="ov-h">Übersicht</h2><button type="button" class="btn ghost" id="ov-close">Schließen</button></div>
+    <div class="tabs" id="ov-tabs"></div>
+    <div class="legend small"><span class="lg done"></span> beantwortet <span class="lg"></span> unbeantwortet <span class="lg flag">⚑</span> markiert</div>
+    <div class="grid" id="ov-grid"></div>
+    <div class="actions"><span></span><button type="button" class="btn" id="ov-submit">Prüfung abgeben</button></div>
+  </div>
+</div>
+
+<!-- Bestätigung -->
+<div class="modal hidden" id="cf" role="alertdialog" aria-modal="true" aria-labelledby="cf-title">
+  <div class="sheet small-sheet">
+    <h2 id="cf-title"></h2>
+    <p id="cf-text"></p>
+    <div class="actions"><button type="button" class="btn ghost" id="cf-cancel">Zurück</button><button type="button" class="btn" id="cf-ok"></button></div>
+  </div>
+</div>
+
 <script>
-// Fragenkatalog – Quellen: Kursfolien Rechtsvorschriften, Modul 2a, 2b, 2c. ⚑ = Gesetzestext, nicht in den Folien. Ergänzt am 22.11.2026 (+216 Fragen).
-// t: "mc" (eine richtige Antwort), "multi" (mehrere richtig), "open" (offene Frage, Selbstbewertung)
+// Fragenkatalog – Quellen: Kursfolien Rechtsvorschriften, Tiertransport, Modul 2a, 2b, 2c. ⚑ = Gesetzestext, nicht in den Folien. Ergänzt am 22.11.2026 (+216 Fragen) und 23.11.2026 (+95 Fragen: Tiertransport, offene Fragen).
+// t: "mc" (eine richtige Antwort), "multi" (mehrere richtig), "open" (offene Frage, Selbstbewertung); p = Punkte, need = Bewertungspunkte für volle Punktzahl
 const CATS = {
   recht: "Recht",
+  transport: "Tiertransport",
   rassen: "Rassen und Zucht",
   koerper: "Körper und Sinne",
   fort: "Fortpflanzung und Kastration",
@@ -762,40 +868,374 @@ const Q = [
 {c:"recht",t:"mc",q:"Eine Mitarbeiterin der Pension verursacht einen Schaden grob fahrlässig. Wer trägt ihn im Innenverhältnis in der Regel?",o:["Grundsätzlich die Mitarbeiterin","Immer allein der Betrieb","Der Kunde","Die Gemeinde"],a:[0],e:"Leichte Fahrlässigkeit → Betrieb · mittlere → Teilung · grobe → grundsätzlich Arbeitnehmer."},
 {c:"recht",t:"mc",q:"Was deckt eine Tierkrankenversicherung?",o:["Behandlungskosten des eigenen Tieres","Schäden, die der Hund Dritten zufügt","Schäden an fremden Hunden in Obhut","Die Hundesteuer"],a:[0],e:"Tierhalterhaftpflicht: eigene Tiere · Betriebs- und Tierhüterhaftpflicht: fremde Tiere in Obhut."},
 {c:"recht",t:"open",q:"Nennen Sie die vier Schritte des Prüfschemas, ob eine Erlaubnis nach § 11 nötig ist.",m:"1. Was geschieht tatsächlich mit welchem Tier? 2. Nennt § 11 Abs. 1 diese Tätigkeit (abschließende Liste)? 3. Ist Gewerbsmäßigkeit erforderlich (nur bei Nr. 8)? 4. Welchen Umfang braucht die Erlaubnis (Leistungen, Tierarten, Standort, verantwortliche Personen)?",k:["tatsächliche Tätigkeit + Tierart","in § 11 Abs. 1 genannt","Gewerbsmäßigkeit nur bei Nr. 8","Umfang der Erlaubnis"]},
-{c:"recht",t:"open",q:"Was prüfen Sie beim Aufnahmecheck eines Pensionshundes?",m:"Chip auslesen und mit dem Heimtierausweis abgleichen, Halter- und Notfallkontakt aufnehmen, Impfungen prüfen (eigene Impfanforderungen der Pension möglich), offene Punkte klären; bei Abweichungen dokumentieren und den Halter informieren.",k:["Chip + Dokument abgleichen","Halter / Notfallkontakt","Impfungen","Abweichungen dokumentieren"]}
-];
+{c:"recht",t:"open",q:"Was prüfen Sie beim Aufnahmecheck eines Pensionshundes?",m:"Chip auslesen und mit dem Heimtierausweis abgleichen, Halter- und Notfallkontakt aufnehmen, Impfungen prüfen (eigene Impfanforderungen der Pension möglich), offene Punkte klären; bei Abweichungen dokumentieren und den Halter informieren.",k:["Chip + Dokument abgleichen","Halter / Notfallkontakt","Impfungen","Abweichungen dokumentieren"]},
+// ---------------- ERGÄNZUNG 23.11.2026: Tiertransport + offene Fragen (Zahlen, Gesetz, Begründen) ----------------
+// p = Punkte; need = Zahl der Bewertungspunkte für volle Punktzahl (sonst alle)
+// ---- TIERTRANSPORT: Auswahl ----
+{c:"transport",t:"mc",q:"Sie fahren mit Ihrem eigenen Hund privat in den Urlaub nach Italien. Gilt die VO (EG) Nr. 1/2005?",
+ o:["Nein, der Transport steht nicht in Verbindung mit einer wirtschaftlichen Tätigkeit","Ja, weil eine Grenze überschritten wird","Ja, sobald die Strecke über 65 km liegt","Nur, wenn die Fahrt länger als 8 Stunden dauert"],a:[0],
+ e:"Art. 1 Abs. 5 VO 1/2005. Für die Reise gelten die Heimtier-Regeln: Chip, gültige Tollwutimpfung, EU-Heimtierausweis."},
+{c:"transport",t:"mc",q:"Als Dogsitter fahren Sie drei Kundenhunde 10 km zur Hundewiese. Die Fahrt kostet nichts extra. Was gilt?",
+ o:["Die VO 1/2005 gilt: Art. 3 und Art. 4 einhalten, eine Zulassung ist nicht nötig","Die VO gilt nicht, weil die Fahrt nicht bezahlt wird","Sie brauchen eine Zulassung Typ 1","Sie brauchen einen Befähigungsnachweis"],a:[0],
+ e:"Der Transport hängt mit Ihrer wirtschaftlichen Tätigkeit zusammen, auch ohne eigenen Preis. Bis 65 km: keine Zulassung (Art. 6 Abs. 7), aber Art. 3 und Transportpapiere nach Art. 4."},
+{c:"transport",t:"mc",q:"Ab welcher Strecke braucht ein Transportunternehmer eine Zulassung nach VO 1/2005?",
+ o:["Über 65 km vom Versandort bis zum Bestimmungsort","Über 50 km","Über 100 km","Erst ab 8 Stunden Fahrzeit"],a:[0],
+ e:"Art. 6 Abs. 7: Abs. 1, 2, 4 und 5 gelten nicht bis 65 km. 65 km = Zulassung ja/nein; 8 Stunden = kurze oder lange Beförderung."},
+{c:"transport",t:"mc",q:"Wofür gilt die Zulassung Typ 1?",
+ o:["Für Beförderungen bis 8 Stunden","Für lange Beförderungen über 8 Stunden","Nur für Flugtransporte","Für Transporte bis 65 km"],a:[0],
+ e:"Typ 1 = Art. 10 (bis 8 h). Typ 2 = Art. 11 (lange Beförderung über 8 h, zusätzlich Befähigungsnachweise, Fahrzeugzulassung, Navigationssystem, Notfallplan)."},
+{c:"transport",t:"mc",q:"Wie lange ist eine Zulassung als Transportunternehmer höchstens gültig?",
+ o:["5 Jahre","1 Jahr","10 Jahre","Unbefristet"],a:[0],
+ e:"Typ 1 und Typ 2: höchstens 5 Jahre. Zuständig ist das Veterinäramt am Sitz des Unternehmens."},
+{c:"transport",t:"multi",q:"Für welche Tiere verlangt Art. 6 Abs. 5 VO 1/2005 einen Befähigungsnachweis für Fahrer und Betreuer?",
+ o:["Hausequiden (Pferde)","Hausrinder","Hunde","Katzen","Geflügel"],a:[0,1,4],
+ e:"Equiden, Rinder, Schafe, Ziegen, Schweine, Geflügel. Hunde und Katzen nicht: für sie gilt Art. 6 Abs. 4 (geschultes Personal)."},
+{c:"transport",t:"mc",q:"Innerhalb welcher Frist muss ein Transportunternehmer Änderungen seiner Zulassungsdaten der Behörde melden?",
+ o:["Spätestens 15 Arbeitstage nach der Änderung","Innerhalb von 4 Monaten","Erst bei der Verlängerung","Innerhalb von 24 Stunden"],a:[0],
+ e:"Art. 6 Abs. 2 VO 1/2005."},
+{c:"transport",t:"multi",q:"Wann darf eine Tiersendung ohne eigenen Betreuer befördert werden?",
+ o:["Die Tiere sind in gesicherten, belüfteten Transportbehältern mit Futter und Wasser für die doppelte Fahrtdauer","Der Fahrer übernimmt die Aufgabe des Betreuers","Die Fahrt dauert weniger als 2 Stunden","Die Tiere sind sediert"],a:[0,1],
+ e:"Art. 6 Abs. 6 a) und b). Beim Hund im Auto gilt fast immer b): wer fährt, ist auch Betreuer."},
+{c:"transport",t:"mc",q:"Wie oft müssen Hunde und Katzen bei einem gewerblichen Transport versorgt werden? ⚑",
+ o:["Höchstens alle 24 Stunden füttern, mindestens alle 8 Stunden tränken","Alle 4 Stunden füttern und tränken","Nur bei Fahrten über 8 Stunden","Alle 12 Stunden füttern, alle 12 Stunden tränken"],a:[0],
+ e:"VO 1/2005 Anhang I Kap. V Nr. 2.2. Schriftliche Fütterungs- und Tränkanweisungen müssen mitgeführt werden."},
+{c:"transport",t:"mc",q:"Ein 7 Wochen alter Welpe soll ohne Mutter zu einem Käufer gefahren werden (gewerblich). Was gilt? ⚑",
+ o:["Er ist nicht transportfähig – Hunde unter 8 Wochen nur in Begleitung des Muttertiers","Er darf fahren, wenn die Fahrt unter 65 km bleibt","Er darf fahren, wenn er geimpft ist","Es gibt keine Altersgrenze"],a:[0],
+ e:"VO 1/2005 Anhang I Kap. I Nr. 2. Außerdem darf ein Welpe erst nach der 8. Woche von der Mutter getrennt werden (§ 2 Abs. 4 TierSchHuV)."},
+{c:"transport",t:"mc",q:"Ab welchem Trächtigkeitsstadium gilt eine Hündin als nicht transportfähig? ⚑",
+ o:["Ab 90 % der Trächtigkeit oder mehr","Ab dem 20. Trächtigkeitstag","Erst am Tag der Geburt","Trächtige Hündinnen sind immer transportfähig"],a:[0],
+ e:"Anhang I Kap. I Nr. 2. Ebenso nicht transportfähig: Tiere, die vor weniger als 7 Tagen geworfen haben, und Neugeborene mit nicht verheiltem Nabel."},
+{c:"transport",t:"mc",q:"Darf ein Hund vor einem Transport routinemäßig ein Beruhigungsmittel bekommen?",
+ o:["Nein – nur wenn unbedingt erforderlich und nur unter tierärztlicher Kontrolle","Ja, das verringert Stress immer","Ja, bei Flügen ist es vorgeschrieben","Ja, wenn der Halter einverstanden ist"],a:[0],
+ e:"Folie: keine routinemäßige Sedierung. VO 1/2005 Anhang I Kap. I Nr. 5 ⚑. Im Flugzeug kann Sedierung Atmung und Gleichgewicht stören."},
+{c:"transport",t:"mc",q:"Eine Flugbox trägt das Online-Siegel „IATA approved“. Was gilt?",
+ o:["Das Siegel bindet die Airline nicht – sie prüft die Box am Schalter","Die Airline muss die Box annehmen","Mit dem Siegel ist keine weitere Prüfung nötig","Das Siegel ersetzt die Gesundheitsbescheinigung"],a:[0],
+ e:"Fall Nala: Die IATA zertifiziert keine Boxen. Es gelten IATA LAR plus State und Operator Variations."},
+{c:"transport",t:"mc",q:"Was ist der Unterschied zwischen Transportpapier, Fahrtenbuch und Heimtierausweis?",
+ o:["Transportpapier = Daten der Fahrt (Art. 4); Fahrtenbuch = nur bei langen Beförderungen von Equiden und Nutztieren; Heimtierausweis = Identität und Impfungen des Tieres","Alle drei sind dasselbe Dokument","Der Heimtierausweis ersetzt das Transportpapier","Das Fahrtenbuch ist für jeden Hundetransport Pflicht"],a:[0],
+ e:"Folie „Das sollte sicher sitzen“: diese drei Dokumente unterscheiden."},
+{c:"transport",t:"mc",q:"Wie verhält sich die deutsche TierSchTrV zur VO (EG) Nr. 1/2005?",
+ o:["Sie führt die EU-Verordnung durch und ergänzt sie, ersetzt sie aber nicht","Sie ersetzt die EU-Verordnung in Deutschland","Sie gilt nur für Flugtransporte","Sie gilt nur, wenn die EU-Verordnung nicht greift"],a:[0],
+ e:"MERKE der Folie. Strengere nationale Regeln sind nach Art. 1 Abs. 3 VO 1/2005 möglich."},
+{c:"transport",t:"multi",q:"Welche Angaben müssen die Transportpapiere nach Art. 4 VO 1/2005 enthalten?",
+ o:["Herkunft und Eigentümer der Tiere","Versandort","Tag und Uhrzeit des Beginns der Beförderung","Vorgesehener Bestimmungsort","Voraussichtliche Dauer der Beförderung","Impfstatus der Tiere"],a:[0,1,2,3,4],
+ e:"Art. 4 Abs. 1 a – e. Es gibt kein amtliches Formular; die Papiere gelten auch unter 65 km."},
+{c:"transport",t:"mc",q:"Ersetzt eine Erlaubnis nach § 11 TierSchG die Zulassung als Transportunternehmer?",
+ o:["Nein","Ja, für Hunde","Ja, bis 8 Stunden","Ja, wenn das Veterinäramt dieselbe Behörde ist"],a:[0],
+ e:"Folie „Das sollte sicher sitzen“: Die §-11-Erlaubnis ersetzt keine Transportzulassung."},
+{c:"transport",t:"mc",q:"Mara plant den Transport, ihr Mitarbeiter Tom fährt. Wer ist nach Art. 3 VO 1/2005 verantwortlich?",
+ o:["Auch Mara, weil sie den Transport „veranlasst“","Nur Tom, weil er fährt","Nur der Halter des Tieres","Niemand, solange kein Schaden entsteht"],a:[0],
+ e:"Art. 3: „Niemand darf eine Tierbeförderung durchführen oder veranlassen …“. Organisator, Transportunternehmer, Fahrer/Betreuer und Absender tragen je ihren Teil."},
+{c:"transport",t:"mc",q:"Ein Hund mit 40 cm Widerristhöhe wird in einem Behältnis versandt. Welche Mindestmaße verlangt die TierSchTrV (Anlage 1)? ⚑",
+ o:["75 × 50 × 55 cm","40 × 30 × 30 cm","55 × 40 × 40 cm","130 × 75 × 95 cm"],a:[0],
+ e:"Anlage 1 Nr. 4 TierSchTrV: 20 cm → 40×30×30 · 30 cm → 55×40×40 · 40 cm → 75×50×55 · 55 cm → 95×60×70 · 70 cm → 130×75×95."},
+{c:"transport",t:"mc",q:"Was ist TRACES?",
+ o:["Das EU-System für Gesundheitsbescheinigungen bei kommerziellen Verbringungen","Ein Register für gechippte Hunde","Die IATA-Vorschrift für Flugboxen","Das Fahrtenbuch für lange Beförderungen"],a:[0],
+ e:"Für den privaten Urlaubshund gelten die Heimtier-Regeln (Chip, Ausweis, Tollwutimpfung), nicht TRACES."},
+{c:"transport",t:"mc",q:"Ein Hund lahmt leicht und belastet ein Bein nur zögerlich. Wer klärt im Zweifel die Transportfähigkeit – und wann?",
+ o:["Der Tierarzt, vor dem Verladen","Der Fahrer während der Fahrt","Der Halter nach der Ankunft","Niemand, leichte Lahmheit ist immer erlaubt"],a:[0],
+ e:"Fall Luna: Beobachtung, Schmerz, Gehfähigkeit, tierärztlicher Rat. Art. 3 b): nur transportfähige Tiere befördern."},
 
+// ---- TIERTRANSPORT: offen ----
+{c:"transport",t:"open",p:8,q:"Nennen Sie die vier Schritte des Prüfschemas für einen Tiertransport.",
+ m:"1. Gilt die VO 1/2005 für diese Fahrt (lebende Wirbeltiere, innerhalb der EU, wirtschaftliche Tätigkeit)? 2. Ist das Tier für Strecke, Dauer und Verkehrsmittel transportfähig? 3. Sind Personen, Zulassungen, Fahrzeug und Behältnis geeignet? 4. Sind Transportpapiere, Gesundheitsunterlagen und Notfallplan vollständig?",
+ k:["Geltung der VO (Art. 1)","Transportfähigkeit","Personen, Zulassung, Fahrzeug, Behältnis","Papiere, Gesundheitsunterlagen, Notfallplan"]},
+{c:"transport",t:"open",p:8,q:"Wann gilt die VO (EG) Nr. 1/2005? Nennen Sie die drei Voraussetzungen und zwei Fälle, in denen sie nicht gilt.",
+ m:"Lebende Wirbeltiere, Transport innerhalb der EU, in Verbindung mit einer wirtschaftlichen Tätigkeit (negative Voraussetzung, Art. 1 Abs. 5). Gilt nicht: privater Transport ohne wirtschaftliche Tätigkeit (eigener Hund in den Urlaub); Transport unter tierärztlicher Anleitung direkt in oder aus einer Praxis / Klinik.",
+ k:["lebende Wirbeltiere","innerhalb der EU","in Verbindung mit wirtschaftlicher Tätigkeit","Ausnahme privat","Ausnahme Tierarzt / Klinik"]},
+{c:"transport",t:"open",p:10,need:5,q:"Nennen Sie fünf allgemeine Transportbedingungen nach Art. 3 VO 1/2005.",
+ m:"Grundsatz: keine Verletzungen oder unnötigen Leiden. Fahrt planen und so kurz wie möglich halten; nur transportfähige Tiere; Transportmittel und Ver-/Entladevorrichtungen sicher; geschultes Personal ohne Gewalt; ohne Verzögerung, Wohlbefinden regelmäßig kontrollieren; ausreichend Bodenfläche und Höhe; Wasser, Futter und Ruhe in angemessenen Abständen.",
+ k:["keine Verletzungen / unnötigen Leiden","Fahrt planen, möglichst kurz","nur transportfähige Tiere","Transportmittel / Verladung sicher","geschultes Personal ohne Gewalt","ohne Verzögerung, regelmäßig kontrollieren","Raum, Wasser, Futter, Ruhe"]},
+{c:"transport",t:"open",p:5,q:"Welche Angaben müssen die Transportpapiere nach Art. 4 VO 1/2005 enthalten?",
+ m:"Herkunft und Eigentümer der Tiere, Versandort, Tag und Uhrzeit des Beginns, vorgesehener Bestimmungsort, voraussichtliche Dauer. Auf Verlangen der Behörde vorlegen.",
+ k:["Herkunft und Eigentümer","Versandort","Tag und Uhrzeit des Beginns","Bestimmungsort","voraussichtliche Dauer"]},
+{c:"transport",t:"open",p:8,q:"Erklären Sie die unterschiedliche Funktion der Grenzen „65 km“ und „8 Stunden“ beim Tiertransport.",
+ m:"Bis 65 km: Art. 3 und Art. 4 gelten, aber keine Zulassung und kein formeller Befähigungsnachweis (Art. 6 Abs. 7). Über 65 km bis 8 h: Zulassung Typ 1 (Art. 10), geschultes Personal, Transportpapier. Über 8 h = lange Beförderung: Zulassung Typ 2 (Art. 11), zusätzliche Nachweise, Notfallplan. Zulassung beim Veterinäramt, höchstens 5 Jahre.",
+ k:["65 km entscheidet über Zulassung (Art. 6 Abs. 7)","bis 65 km: trotzdem Art. 3 + Art. 4","über 65 km bis 8 h: Typ 1","über 8 h: lange Beförderung, Typ 2","Veterinäramt / max. 5 Jahre"]},
+{c:"transport",t:"open",p:10,q:"Fall: Ihre Hundepension soll Hund Rocky 170 km entfernt beim Halter abholen. Was müssen Sie vor der Fahrt klären? Begründen Sie.",
+ m:"VO 1/2005 gilt (wirtschaftliche Tätigkeit). 170 km > 65 km → Zulassung Typ 1 nötig (Art. 6 Abs. 1, Art. 10). Transportfähigkeit von Rocky prüfen. Geeignete, gesicherte, belüftete Box; Hitze vermeiden. Geschultes Personal (Art. 6 Abs. 4). Transportpapiere nach Art. 4 mitführen. Art. 3: Fahrt planen, Wasser, Pausen.",
+ k:["VO gilt (wirtschaftliche Tätigkeit)","über 65 km → Zulassung Typ 1","Transportfähigkeit prüfen","geeignete, gesicherte Box / Klima","Transportpapiere Art. 4","geschultes Personal"]},
+{c:"transport",t:"open",p:8,q:"Wann ist ein Hund nicht transportfähig? Nennen Sie vier Fälle und was für Beruhigungsmittel gilt. ⚑",
+ m:"Verletzt oder krank, kann sich nicht schmerzfrei bewegen; trächtig ab 90 % der Tragzeit oder vor weniger als 7 Tagen geworfen; Neugeborene mit nicht verheiltem Nabel; Welpen unter 8 Wochen ohne Muttertier. Beruhigungsmittel nur, wenn unbedingt erforderlich, und nur unter tierärztlicher Kontrolle.",
+ k:["verletzt / krank / nicht schmerzfrei beweglich","trächtig ≥ 90 % oder < 7 Tage nach Geburt","Nabel nicht verheilt","Welpen < 8 Wochen ohne Mutter","Sedierung nur tierärztlich, wenn unbedingt nötig"]},
+{c:"transport",t:"open",p:8,need:5,q:"Welche Anforderungen muss eine Flugbox für einen Hund erfüllen? Nennen Sie fünf.",
+ m:"Der Hund kann stehen, aufrecht sitzen, liegen und sich drehen. Stabile Konstruktion, sichere Tür, keine scharfen Kanten (Ober- und Unterteil verschraubt, nicht nur Clips). Ausbruch-, nasen- und pfotensicher. Fester, auslaufsicherer Boden mit saugfähiger Unterlage. Ausreichende Belüftung. Wassernapf von außen befüllbar, Kennzeichnung.",
+ k:["stehen, sitzen, liegen, drehen","stabil, sichere Tür, keine scharfen Kanten","ausbruch-, nasen- und pfotensicher","fester, dichter Boden, saugfähig","Belüftung","Wassernapf von außen / Kennzeichnung"]},
+{c:"transport",t:"open",p:8,q:"Fall Nala: Die Airline lehnt die Box ab. Nala kann sich kaum drehen, Ober- und Unterteil halten nur mit Kunststoffclips, der Wassernapf ist nicht von außen befüllbar, die Box hat ein Online-Siegel „IATA approved“. Ist die Ablehnung richtig? Begründen Sie.",
+ m:"Ja, sachgerecht. Größe und Bewegungsmöglichkeit reichen nicht; Verriegelung und Wasserversorgung sind unzureichend; das Online-Siegel bindet die Airline nicht (IATA zertifiziert keine Boxen). Folge: geeignete Box, Umbuchung, Dokumente erneut prüfen.",
+ k:["Ja, Ablehnung richtig","Größe / Drehen reicht nicht","Clips + Wassernapf unzureichend","Siegel bindet die Airline nicht","neue Box, Umbuchung, Dokumente prüfen"]},
+{c:"transport",t:"open",p:6,q:"Wer trägt beim Tiertransport welche Verantwortung?",
+ m:"Organisator: plant, beauftragt, koordiniert (Art. 5). Transportunternehmer: führt den Transport als wirtschaftliche Tätigkeit durch (Art. 6). Fahrer / Betreuer: sachkundiger Umgang während der Fahrt. Halter und Absender: richtige Angaben, nur transportfähige Tiere. Jeder haftet für seinen Teil.",
+ k:["Organisator plant / beauftragt","Transportunternehmer führt durch","Fahrer / Betreuer: Umgang mit dem Tier","Halter / Absender: Angaben, nur transportfähige Tiere"]},
+{c:"transport",t:"open",p:8,q:"Ihre Pension hat eine Erlaubnis nach § 11 und will einen Abholservice bis 120 km anbieten. Reicht die Erlaubnis? Begründen Sie.",
+ m:"Nein. Die §-11-Erlaubnis ersetzt keine Transportzulassung. Der Abholservice ist wirtschaftliche Tätigkeit → VO 1/2005 gilt. Über 65 km: Zulassung Typ 1 beim Veterinäramt, geschultes Personal. Immer: Art. 3, Transportpapiere (Art. 4), TierSchTrV.",
+ k:["Nein","§ 11 ersetzt keine Transportzulassung","wirtschaftliche Tätigkeit → VO gilt","über 65 km Zulassung Typ 1","Art. 3 / Art. 4 / geschultes Personal"]},
+{c:"transport",t:"open",p:4,q:"Was kann die Behörde tun, wenn bei einem Tiertransport die Regeln nicht eingehalten werden?",
+ m:"Kontrollieren und anordnen: Tiere versorgen (Wasser, Futter), umladen, zurückfahren lassen oder den Transport untersagen. Kosten trägt der Transportunternehmer. Zusätzlich Zulassung aussetzen oder entziehen, Bußgeld.",
+ k:["Kontrolle / Anordnung","Versorgung, Umladung","Rückkehr oder Untersagung","Kosten / Zulassung entziehen / Bußgeld"]},
+
+// ---- RECHT: offen ----
+{c:"recht",t:"open",p:10,q:"Nennen Sie die Mindestbodenflächen für einen Zwinger nach § 6 TierSchHuV. Was gilt für weitere Hunde, für eine Hündin mit Welpen und für die Seitenlänge?",
+ m:"Widerristhöhe bis 50 cm: 6 m² · über 50 bis 65 cm: 8 m² · über 65 cm: 10 m². Jeder weitere Hund: + die Hälfte der Fläche. Hündin mit Welpen: doppelte Fläche. Jede Seite mindestens doppelte Körperlänge, keine Seite unter 2 m.",
+ k:["bis 50 cm: 6 m²","über 50 – 65 cm: 8 m²","über 65 cm: 10 m²","weiterer Hund + ½, Hündin mit Welpen doppelt","Seite ≥ doppelte Körperlänge, mind. 2 m"]},
+{c:"recht",t:"open",p:6,q:"In einem Zwinger sollen drei aneinander gewöhnte Hunde mit je 60 cm Widerristhöhe leben. Berechnen Sie die Mindestfläche und nennen Sie die Vorschrift.",
+ m:"Erster Hund 8 m² (über 50 bis 65 cm). Jeder weitere Hund + die Hälfte = + 4 m². 8 + 4 + 4 = 16 m² (§ 6 Abs. 2 TierSchHuV).",
+ k:["8 m² für den ersten Hund","je weiterer Hund + 4 m²","Ergebnis 16 m²","§ 6 Abs. 2 TierSchHuV"]},
+{c:"recht",t:"open",p:10,need:5,q:"Welche Anforderungen stellt § 6 TierSchHuV an einen Zwinger – außer der Fläche? Nennen Sie fünf.",
+ m:"Einfriedung gesundheitsunschädlich, nicht überwindbar, ohne Verletzungsgefahr; der aufgerichtete Hund erreicht die Oberkante nicht. Boden trittsicher, leicht sauber und trocken zu halten. Trennvorrichtungen: Hunde können sich nicht beißen. Mindestens eine Seite mit freier Sicht nach außen. Keine stromführenden Vorrichtungen in Reichhöhe. Einzelzwinger möglichst mit Sichtkontakt zu anderen Hunden.",
+ k:["Einfriedung unschädlich, nicht überwindbar, keine Verletzung","Boden trittsicher, sauber und trocken zu halten","Trennwände: kein gegenseitiges Beißen","mind. eine Seite freie Sicht nach außen","kein Strom in Reichhöhe","Sichtkontakt zu anderen Hunden"]},
+{c:"recht",t:"open",p:6,q:"Ein Pensionshund wird tagsüber im Freien gehalten. Was verlangt § 4 TierSchHuV?",
+ m:"Eine Schutzhütte: wärmegedämmt, gesundheitsunschädlich, der Hund bleibt trocken und kann sich darin bewegen und liegen. Außerhalb der Hütte zusätzlich ein witterungsgeschützter, schattiger Liegeplatz mit wärmegedämmtem Boden.",
+ k:["Schutzhütte","wärmegedämmt, unschädlich, trocken","groß genug zum Bewegen / Liegen","zusätzlicher Liegeplatz: witterungsgeschützt, schattig, wärmegedämmt"]},
+{c:"recht",t:"open",p:6,q:"Sie wollen Pensionshunde in einem Nebenraum unterbringen, der nicht für Menschen bestimmt ist. Was verlangt § 5 TierSchHuV?",
+ m:"Natürliches Tageslicht. Lichtöffnungen in der Regel mindestens 1/8 der Bodenfläche – außer der Hund hat ständig Zugang zu einem Auslauf im Freien. Bodenfläche wie beim Zwinger (§ 6 Abs. 2).",
+ k:["Tageslicht","Lichtöffnungen ≥ 1/8 der Bodenfläche","Ausnahme: ständiger Zugang ins Freie","Bodenfläche wie Zwinger (§ 6)"]},
+{c:"recht",t:"open",p:8,need:4,q:"Welche Vorschriften der TierSchHuV schützen Welpen? Nennen Sie vier mit Zahlen.",
+ m:"Trennung von der Mutter erst nach der 8. Lebenswoche (Ausnahme: tierärztlich begründet). Bis 20 Wochen mindestens 4 Stunden täglich Umgang mit einer Betreuungsperson. Wurfkiste spätestens 3 Tage vor der Geburt. Welpen in Räumen ab der 5. Woche täglich Auslauf im Freien. 1 Betreuungsperson für höchstens 5 Zuchthunde mit Welpen.",
+ k:["Trennung erst nach 8 Wochen","bis 20 Wochen: 4 h Umgang täglich","Wurfkiste 3 Tage vor Geburt","ab 5. Woche Auslauf im Freien","1 Betreuungsperson / 5 Zuchthunde"]},
+{c:"recht",t:"open",p:10,need:5,q:"Welche allgemeinen Anforderungen nach § 2 TierSchHuV muss Ihre Hundepension erfüllen? Nennen Sie fünf.",
+ m:"Auslauf im Freien außerhalb des Zwingers; mehrmals täglich Umgang mit der Betreuungsperson; regelmäßiger Kontakt zu Artgenossen; in Gruppen: eigener Liegeplatz, individuelle Fütterung und Versorgung; fremde Hunde nur unter Aufsicht zusammenführen; keine unkontrollierte Vermehrung; Einzelhaltung: mehrmals täglich länger Umgang; keine Stachelhalsbänder oder anderen schmerzhaften Mittel.",
+ k:["Auslauf im Freien","mehrmals täglich Umgang","Kontakt zu Artgenossen","Gruppe: Liegeplatz + individuelle Fütterung","fremde Hunde nur unter Aufsicht","keine unkontrollierte Vermehrung","Einzelhaltung: länger Umgang","keine schmerzhaften Mittel"]},
+{c:"recht",t:"open",p:8,q:"Sie lassen im Sommer einen Pensionshund 20 Minuten allein im Auto. Beurteilen Sie das rechtlich und fachlich.",
+ m:"§ 8 TierSchHuV: ausreichende Frischluft und angemessene Temperatur sicherstellen. Fachlich: Das Auto heizt sich schnell auf; der Hund gibt Wärme fast nur über Hecheln ab (Schweißdrüsen nur an den Ballen) → Hitzschlag, Lebensgefahr, über 40 °C Notfall. Verstoß gegen § 2 TierSchG; § 8 TierSchHuV ist bußgeldbewehrt (§ 12). Lösung: Hund nicht allein im Auto lassen.",
+ k:["§ 8 TierSchHuV: Frischluft + Temperatur","Wärmeabgabe fast nur über Hecheln","Hitzschlag / Lebensgefahr","Verstoß TierSchG / Bußgeld","nicht allein lassen"]},
+{c:"recht",t:"open",p:8,q:"Sie haben eine Erlaubnis für Ihre Pension und wollen zusätzlich Hundetraining für Kunden anbieten. Was müssen Sie rechtlich beachten? Begründen Sie.",
+ m:"Ausbildung von Hunden für Dritte = § 11 Abs. 1 Nr. 8f. Die Erlaubnis gilt nur für die eingetragenen Tätigkeiten → Erweiterung bzw. eigene Erlaubnis nötig. Eigene Sachkunde für Hundetraining nachweisen; die Pensions-Sachkunde reicht nicht. Erst nach Erteilung anfangen, sonst Ordnungswidrigkeit (§ 18).",
+ k:["Nr. 8f: Hunde für Dritte ausbilden","Erlaubnis gilt nur für eingetragene Tätigkeit","eigene Sachkunde für Training","erst nach Erteilung / sonst § 18"]},
+{c:"recht",t:"open",p:8,q:"Sie haben die Erlaubnis nach § 11 beantragt. Wann dürfen Sie anfangen, wie lange darf die Behörde brauchen und was passiert, wenn Sie vorher anfangen?",
+ m:"Erst nach Erteilung der Erlaubnis (§ 11 Abs. 5). Die Behörde entscheidet innerhalb von 4 Monaten nach Eingang des Antrags; Verlängerung um bis zu 2 Monate möglich. Ohne Erlaubnis: Die Behörde soll die Tätigkeit untersagen; Ordnungswidrigkeit nach § 18 (Bußgeld bis 25.000 €).",
+ k:["erst nach Erteilung","4 Monate","Verlängerung bis 2 Monate","Untersagung + Bußgeld (§ 18)"]},
+{c:"recht",t:"open",p:8,q:"Definieren Sie Schmerz, Leiden und Schaden im Sinne des Tierschutzgesetzes. Wann darf man sie einem Tier zufügen?",
+ m:"Schmerz: unangenehme körperliche Empfindung. Leiden: weitergehende Beeinträchtigung des Wohlbefindens. Schaden: nachteilige Veränderung körperlicher oder psychischer Funktionen. Nur mit vernünftigem Grund (§ 1 Satz 2); bewertet werden Intensität, Dauer, Wiederholung, Zweck und mildere Mittel.",
+ k:["Schmerz richtig","Leiden richtig","Schaden richtig","nur mit vernünftigem Grund (§ 1)"]},
+{c:"recht",t:"open",p:8,q:"Was ist der Unterschied zwischen § 17 und § 18 TierSchG? Nennen Sie je die mögliche Folge und ein Beispiel.",
+ m:"§ 17 = Straftat: z. B. ein Wirbeltier ohne vernünftigen Grund töten oder ihm aus Rohheit bzw. länger anhaltend oder wiederholt erhebliche Schmerzen oder Leiden zufügen → Freiheitsstrafe bis 3 Jahre oder Geldstrafe. § 18 = Ordnungswidrigkeit, z. B. Tätigkeit ohne Erlaubnis nach § 11 → Bußgeld bis 25.000 €.",
+ k:["§ 17 = Straftat","Freiheitsstrafe bis 3 Jahre oder Geldstrafe","§ 18 = Ordnungswidrigkeit","Bußgeld bis 25.000 €","passende Beispiele"]},
+{c:"recht",t:"open",p:6,q:"Warum sollten Sie als Dogsitter Übergabe, Zustand des Hundes und Vorfälle dokumentieren? Begründen Sie mit dem BGB.",
+ m:"Als Dogsitter sind Sie Tieraufseher (§ 834 BGB). Ihr Verschulden wird vermutet; Sie haften nicht, wenn Sie beweisen, dass Sie die erforderliche Sorgfalt beachtet haben (Entlastungsbeweis). Die Dokumentation ist dieser Beweis.",
+ k:["Tieraufseher § 834 BGB","Verschulden wird vermutet","Entlastungsbeweis: Sorgfalt nachweisen","Dokumentation = Beweis"]},
+{c:"recht",t:"open",p:6,q:"Welche Pflichten nennt § 2 TierSchG und für wen gelten sie?",
+ m:"Wer ein Tier hält, betreut oder zu betreuen hat, muss es angemessen ernähren, pflegen und verhaltensgerecht unterbringen; darf die artgemäße Bewegung nicht so einschränken, dass Schmerzen, vermeidbare Leiden oder Schäden entstehen; muss die nötigen Kenntnisse und Fähigkeiten haben. Gilt auch für vorübergehende Betreuung (Dogsitter, Pension).",
+ k:["ernähren, pflegen, verhaltensgerecht unterbringen","Bewegung nicht schädlich einschränken","Kenntnisse und Fähigkeiten","gilt auch für Betreuer"]},
+{c:"recht",t:"open",p:8,q:"Darf der Staat eine Erlaubnis für Ihre Hundepension verlangen, obwohl Art. 12 GG die Berufsfreiheit schützt? Begründen Sie.",
+ m:"Ja. Art. 12 GG ist ein Grundrecht und berechtigt den Einzelnen. Der Tierschutz ist nach Art. 20a GG ein Staatsziel und verpflichtet den Staat. Die Berufsfreiheit darf deshalb durch Gesetz (§ 11 TierSchG) eingeschränkt werden. Wer die Voraussetzungen erfüllt, bekommt die Erlaubnis.",
+ k:["Ja","Art. 12 = Grundrecht, berechtigt den Einzelnen","Art. 20a = Staatsziel, verpflichtet den Staat","Einschränkung durch Gesetz (§ 11) zulässig"]},
+{c:"recht",t:"open",p:8,need:5,q:"Nennen Sie die Regelungsebenen von oben nach unten mit je einem Beispiel aus dem Hundebereich.",
+ m:"EU-Recht (VO 1/2005) – Grundgesetz (Art. 20a) – Bundesrecht (TierSchG, TierSchHuV, BGB) – Landesrecht (z. B. Hundegesetz Berlin, Waldgesetz) – kommunale Satzung (Hundesteuersatzung). Die niedrigere Ebene darf der höheren nicht widersprechen.",
+ k:["EU-Recht + Beispiel","Grundgesetz + Beispiel","Bundesrecht + Beispiel","Landesrecht + Beispiel","Kommune + Beispiel","niedrigere Ebene darf nicht widersprechen"]},
+{c:"recht",t:"open",p:6,q:"Ein Kunde sagt: „Mein Hund ist gechippt, also ist alles angemeldet.“ Stimmt das? Begründen Sie.",
+ m:"Nein. Kennzeichnung (Chip), Registrierung (z. B. in einem Haustierregister), Hundesteuer (Anmeldung bei der Gemeinde) und Anzeigepflichten sind verschiedene Pflichten. Der Chip ersetzt weder die Registrierung noch die Steueranmeldung.",
+ k:["Nein","Chip = nur Kennzeichnung","Registrierung ist eigene Pflicht","Hundesteuer / Anmeldung bei der Gemeinde"]},
+{c:"recht",t:"open",p:8,q:"Ein Tierschutzverein holt Hunde aus Rumänien und gibt sie in Deutschland gegen Schutzgebühr ab. Welche Regeln sind zu prüfen? Begründen Sie.",
+ m:"Abgabe gegen Gegenleistung / Eigentumswechsel = kommerzielle Verbringung: der Heimtierausweis allein reicht nicht (Registrierung, Gesundheitsbescheinigung, Meldung über TRACES). Erlaubnis nach § 11 Abs. 1 Nr. 5 (Einfuhr / Vermittlung gegen Entgelt). Transport ist wirtschaftliche Tätigkeit → VO 1/2005: Zulassung, Transportfähigkeit, Papiere.",
+ k:["kommerzielle Verbringung, Heimtierausweis reicht nicht","Gesundheitsbescheinigung / TRACES","§ 11 Abs. 1 Nr. 5","VO 1/2005 für den Transport"]},
+{c:"recht",t:"open",p:6,q:"Was verbietet § 11b TierSchG, und was bedeutet § 10 TierSchHuV für Hundeausstellungen?",
+ m:"§ 11b: Qualzucht – Züchten, wenn bei den Nachkommen erblich bedingt Schmerzen, Leiden oder Schäden zu erwarten sind. § 10 TierSchHuV: Hunde mit tierschutzwidrig amputierten Körperteilen (z. B. Ohren, Rute) oder mit Qualzuchtmerkmalen dürfen nicht ausgestellt werden.",
+ k:["§ 11b = Qualzucht verboten","erblich bedingte Schmerzen / Leiden / Schäden","Ausstellungsverbot amputierte Körperteile","Ausstellungsverbot Qualzuchtmerkmale"]},
+{c:"recht",t:"open",p:8,q:"Zwei fremde Hunde sollen in Ihrer Pension in einen gemeinsamen Auslauf. Was schreibt die TierSchHuV vor und wie gehen Sie vor?",
+ m:"§ 2 Abs. 2 TierSchHuV: nicht aneinander gewöhnte Hunde nur unter Aufsicht zusammenführen; jeder Hund eigener Liegeplatz, individuelle Fütterung; keine unkontrollierte Vermehrung (läufige Hündinnen trennen). Praktisch: neutraler Ort, an der Leine kennenlernen, Körpersprache beobachten, Rückzugsmöglichkeiten, bei Stress abbrechen und trennen.",
+ k:["nur unter Aufsicht zusammenführen","Liegeplatz + individuelle Fütterung","keine unkontrollierte Vermehrung","Körpersprache beobachten / schrittweise / abbrechen"]},
+{c:"recht",t:"open",p:8,q:"Ein Kunde bittet Sie, seinen ziehenden Hund mit Stachelhalsband zu führen. Wie reagieren Sie? Begründen Sie rechtlich und fachlich.",
+ m:"Ablehnen. § 2 Abs. 5 TierSchHuV: Stachelhalsbänder und andere schmerzhafte Mittel sind bei Ausbildung, Erziehung und Training verboten; § 3 TierSchG (z. B. Nr. 5) beachten. Fachlich: Schmerz erzeugt Angst und kann Aggression fördern, belastet die Beziehung. Alternative: gut sitzendes Geschirr, Leinenführigkeit mit positiver Verstärkung.",
+ k:["ablehnen","§ 2 Abs. 5 TierSchHuV","Schmerz → Angst / Aggression","Alternative: Geschirr, positive Verstärkung"]},
+
+// ---- KÖRPER: offen ----
+{c:"koerper",t:"open",p:6,q:"Warum ist Hitze für Hunde besonders gefährlich und wie schützen sie sich gegen Kälte?",
+ m:"Hunde geben Wärme fast nur über Hecheln ab, Schweißdrüsen haben sie nur an den Ballen. Deshalb Überhitzung schnell, über 40 °C Notfall. Gegen Kälte: Kältezittern (kostet viel Energie), Einrollen, isolierte Liegeplätze / Höhlen.",
+ k:["Wärmeabgabe über Hecheln","Schweißdrüsen nur an den Ballen","über 40 °C Notfall","Kältezittern / Einrollen / isolierter Liegeplatz"]},
+{c:"koerper",t:"open",p:8,q:"Beschreiben Sie das Sehen des Hundes mit Zahlen. Was bedeutet das für das Training?",
+ m:"Mehr Stäbchen als Zapfen: gutes Dämmerungssehen, wenig Farbe (Rot-Grün-Schwäche, sieht Blau und Gelb). Tapetum lucidum. Sichtfeld ca. 240° (Mensch 200°), binokular ca. 90° (Mensch 120°). Stark auf Bewegung optimiert (ca. 80 Bilder/s). Training: klare Sichtzeichen, Bewegung wird schnell wahrgenommen, rotes Spielzeug auf Rasen schlecht sichtbar.",
+ k:["Stäbchen > Zapfen, Dämmerungssehen","Rot-Grün-Schwäche","Sichtfeld 240°, binokular 90°","Bewegungssehen","Folge für Training"]},
+{c:"koerper",t:"open",p:8,q:"Vergleichen Sie den Geruchssinn von Hund und Mensch mit Zahlen.",
+ m:"Riechzellen: Mensch ca. 5 Mio., Dackel 125 Mio., Schäferhund 220 Mio. Riechepithel: Hund 2 × 25 cm², Mensch 2 × 5 cm². Rezeptortypen: Hund über 1.000, Mensch ca. 400. Epithel erneuert sich alle 4 – 6 Wochen. Jacobson-Organ für Pheromone. Bei der Geburt schon ausgebildet.",
+ k:["Riechzellen 5 / 125 / 220 Mio.","Riechepithel 2×25 vs. 2×5 cm²","Rezeptortypen > 1.000 vs. 400","Jacobson-Organ: Pheromone"]},
+{c:"koerper",t:"open",p:6,q:"Beschreiben Sie das Gebiss des Hundes mit Zahlen.",
+ m:"Bei der Geburt zahnlos; Milchzähne ab dem 20. Tag; Milchgebiss 28 Zähne (keine Molaren); Zahnwechsel ca. mit 4 Monaten; bleibendes Gebiss 42 Zähne.",
+ k:["Milchzähne ab 20. Tag","Milchgebiss 28","Zahnwechsel ca. 4 Monate","bleibendes Gebiss 42"]},
+{c:"koerper",t:"open",p:6,q:"Wie hört der Hund im Vergleich zum Menschen? Was folgt daraus für die Hundebetreuung?",
+ m:"Hund ca. 15 – 50.000 Hz, bester Bereich um 8.000 Hz; Mensch 20 – 20.000 Hz. Hunde hören hohe Töne, die wir nicht hören (Hundepfeife), und reagieren empfindlich auf Lärm (Silvester, Böller). Leise Signale reichen.",
+ k:["bis ca. 50.000 Hz","bester Bereich um 8.000 Hz","Mensch bis 20.000 Hz","Folge: Lärm / leise Signale / Pfeife"]},
+
+// ---- FORTPFLANZUNG: offen ----
+{c:"fort",t:"open",p:8,q:"Beschreiben Sie die drei Phasen der Geburt mit Zeitangaben und typischen Zeichen.",
+ m:"Öffnungsphase 6 – 36 Stunden: Nestbau, Unruhe, Belecken der Vulva, Temperaturabfall. Austreibungsphase: Welpen alle ½ – 2 Stunden, in den Eihäuten, die Mutter öffnet sie. Nachgeburtsphase: Nachgeburten, meist von der Mutter gefressen.",
+ k:["Öffnungsphase 6 – 36 h","Zeichen: Nestbau, Unruhe, Temperaturabfall","Austreibung: alle ½ – 2 h, Eihäute","Nachgeburtsphase"]},
+{c:"fort",t:"open",p:6,q:"Wie lange dauert die Trächtigkeit und wie kann man sie feststellen?",
+ m:"Ø 63 Tage (58 – 68). Ultraschall ab dem 20. Tag, Röntgen ab dem 54. Tag (Welpen zählen).",
+ k:["Ø 63 Tage","58 – 68 Tage","Ultraschall ab Tag 20","Röntgen ab Tag 54"]},
+{c:"fort",t:"open",p:10,q:"Eine Hündin in Ihrer Pension wird läufig. Was tun Sie? Begründen Sie.",
+ m:"Von Rüden trennen (auch im Proöstrus ist sie schon attraktiv; Standhitze ca. Tag 10 – 18). § 2 Abs. 2 TierSchHuV: keine unkontrollierte Vermehrung. Halter informieren, vertraglich regeln, dokumentieren. Bei Deckakt: „hängende“ Hunde nicht gewaltsam trennen; Tierarzt kann die Einnistung verhindern (meist 5 – 7 Tage nach dem Deckakt).",
+ k:["von Rüden trennen","schon im Proöstrus attraktiv / Standhitze Tag 10 – 18","§ 2 Abs. 2: keine unkontrollierte Vermehrung","Halter informieren / dokumentieren","beim Hängen nicht trennen / Tierarzt"]},
+{c:"fort",t:"open",p:10,q:"Ein Halter will seine Hündin kastrieren lassen. Nennen Sie rechtliche Grundlage, Vorteile und Risiken laut Kurs.",
+ m:"§ 6 TierSchG: Entnehmen von Organen verboten; Ausnahme tierärztliche Indikation oder Verhinderung unkontrollierter Fortpflanzung, Einzelfallentscheidung. Indikationen: Erkrankungen von Eierstock / Gebärmutter, Diabetes, wiederholt starke Scheinträchtigkeit, keine Läufigkeit / Trächtigkeit. Risiko: Harninkontinenz (v. a. > 20 kg, Ø 3 Jahre danach, behandelbar); Angst kann gleich bleiben oder schlimmer werden. Schutz vor Gesäugekrebs: heute umstritten.",
+ k:["§ 6 TierSchG, Einzelfall Tierarzt","Indikationen","Harninkontinenz > 20 kg","Angst bleibt / kann schlimmer werden","Gesäugekrebs-Schutz umstritten"]},
+
+// ---- FÜTTERUNG: offen ----
+{c:"futter",t:"open",p:6,q:"Nennen Sie die Futterarten nach Feuchtigkeitsgehalt und erklären Sie „Alleinfuttermittel“.",
+ m:"Trockenfutter unter 14 %, halbfeucht 15 – 20 %, Feuchtfutter 72 – 80 % Feuchtigkeit. Alleinfuttermittel: reicht allein als tägliche Ration.",
+ k:["Trocken < 14 %","halbfeucht 15 – 20 %","feucht 72 – 80 %","Alleinfutter = reicht allein"]},
+{c:"futter",t:"open",p:8,q:"Wie setzt sich eine selbst gemischte Ration für einen erwachsenen Hund zusammen? Was ändert sich bei Zuchthündin und wachsendem Hund?",
+ m:"Erwachsen: 35 – 45 % eiweißreiche Futtermittel, 45 – 55 % Getreideprodukte, ca. 5 % Rohfaser, ca. 5 % Öl / Fett, Mineralfutter 0,5 g / kg KM / Tag. Zuchthündin und Wachstum: höherer Eiweißanteil (45 – 55 %) und 2,5 g Mineralfutter / kg KM / Tag.",
+ k:["Eiweiß 35 – 45 %","Getreide 45 – 55 %","Rohfaser / Fett je ca. 5 %","Mineralfutter 0,5 g/kg","Zucht / Wachstum: mehr Eiweiß, 2,5 g/kg"]},
+{c:"futter",t:"open",p:6,q:"Welche Futterzusätze können bei Stress helfen und wie wirken sie?",
+ m:"L-Tryptophan: Vorstufe von Serotonin, wichtig für die Impulskontrolle. Alpha-Casozepin: aus Milch, erhöht die Aktivität von GABA, wirkt v. a. bei Langzeitgabe. L-Theanin: aus grünem Tee, fördert die Freisetzung von GABA.",
+ k:["L-Tryptophan → Serotonin","Alpha-Casozepin (Milch) → GABA","L-Theanin (grüner Tee) → GABA"]},
+{c:"futter",t:"open",p:6,q:"Woran erkennen Sie, dass ein Hund richtig gefüttert wird? Was tun Sie, wenn er zunimmt?",
+ m:"Normalgewicht, normaler Kotabsatz, glänzendes Fell, typisches Verhalten. Menge nach der Figur, nicht nur nach Deklaration. Zunahme: meist Überfütterung → Menge anpassen; eine Krankheit ist möglich → Tierarzt.",
+ k:["Normalgewicht","Kot / Fell / Verhalten","Menge nach Figur","Überfütterung, aber Krankheit möglich"]},
+
+// ---- GESUNDHEIT: offen ----
+{c:"gesund",t:"open",p:10,q:"Parvovirose: Wie wird sie übertragen, woran erkennt man sie, wer ist gefährdet und was tun Sie in der Pension?",
+ m:"Übertragung über infizierten Kot (auch über Futter, Hände, Kleidung, Fell); das Virus bleibt lange in der Umgebung. Symptome: plötzliches starkes Erbrechen, wässriger, oft blutiger Durchfall, Fieber, Dehydration. Gefährdet: Welpen ab 4 Wochen und Hunde bis 1 Jahr, v. a. ungeimpfte. Maßnahmen: absondern, sofort Tierarzt, gründlich reinigen und desinfizieren, Halter informieren, Impfung (Core) verlangen.",
+ k:["Übertragung über Kot / Umgebung","Erbrechen, blutiger Durchfall","Welpen / Junghunde, ungeimpft","absondern, Tierarzt, desinfizieren","Core-Impfung verlangen"]},
+{c:"gesund",t:"open",p:8,q:"Tollwut: Hauptüberträger, Übertragung, Verlauf und was für Reisen mit dem Hund gilt.",
+ m:"Hauptüberträger in Europa: Rotfuchs. Übertragung vor allem durch Biss (Speichel). Mit Symptomen immer tödlich. In Deutschland ist die terrestrische Tollwut getilgt, aber für grenzüberschreitende Reisen ist die Tollwutimpfung Pflicht (ab 12 Wochen); für manche Länder außerhalb der EU zusätzlich Titer ≥ 0,5 IE/ml.",
+ k:["Rotfuchs","Biss / Speichel","mit Symptomen tödlich","Reise: Impfung ab 12 Wochen","Titer 0,5 IE/ml"]},
+{c:"gesund",t:"open",p:8,q:"Was ist eine Zoonose? Nennen Sie je drei Beispiele für direkte und für vektorübertragene Zoonosen.",
+ m:"Infektionskrankheit, die zwischen Tier und Mensch übertragbar ist. Direkt: Tollwut, Spulwürmer, Giardien, Flöhe, Hautpilze, Leptospirose. Über Vektoren: Leishmaniose, Borreliose, FSME.",
+ k:["Definition","3 direkte Beispiele","3 Vektor-Beispiele","Hygiene in der Betreuung"]},
+{c:"gesund",t:"open",p:6,q:"Staupe: Symptome, Verwandtschaft des Virus und wer außer Hunden betroffen ist.",
+ m:"Fieber, Ausfluss aus Augen und Nase, Appetitlosigkeit, Erbrechen, Durchfall, eventuell neurologische Symptome, Hartballenkrankheit. Virus verwandt mit dem Masernvirus. Betrifft auch wildlebende Carnivoren (Fuchs, Dachs, Marder, Seehunde, Frettchen). Core-Impfung.",
+ k:["Fieber, Ausfluss, Magen-Darm","neurologisch / Hartballen","Masernvirus","Wildtiere (Fuchs, Marder …)"]},
+{c:"gesund",t:"open",p:6,q:"Giardien: Was verursachen sie, wie werden sie übertragen und festgestellt, warum sind sie in Beständen ein Problem?",
+ m:"Einzeller, häufigste Parasitose bei Hund und Katze, Zoonose. Schleimige Durchfälle. Schmierinfektion über Futter, Wasser, Umgebung. Diagnose über Kotprobe. In größeren Beständen schwer zu beherrschen → Hygiene, alle Tiere behandeln.",
+ k:["Einzeller / häufigste Parasitose / Zoonose","schleimiger Durchfall","Schmierinfektion","Kotprobe","in Beständen schwer zu beherrschen"]},
+{c:"gesund",t:"open",p:6,q:"Unterscheiden Sie Sarcoptes-Räude, Demodikose und Ohrräude.",
+ m:"Sarcoptes („Fuchsräude“): starker Juckreiz, sehr ansteckend auch für andere Caniden, Behandlung 8 Wochen oder länger. Demodex: anfangs kaum Juckreiz, Haarausfall, v. a. Junghunde und Molosser. Ohrräude: Kratzen an den Ohren, kaffeesatzartiges Sekret, oft von Katzen übertragen → Katzen im Haushalt mitbehandeln.",
+ k:["Sarcoptes: starker Juckreiz, ansteckend","Demodex: wenig Juckreiz, Junghunde / Molosser","Ohrräude: Sekret, Katzen"]},
+{c:"gesund",t:"open",p:6,q:"Welche Impfanforderungen stellen Sie an Pensionshunde? Begründen Sie.",
+ m:"Pensionen dürfen eigene Impfanforderungen stellen (schriftlich im Vertrag). Sinnvoll: Core-Impfungen (Staupe, Parvovirose, Leptospirose) aktuell nach Schema; Zwingerhusten wegen vieler Kontakte und Stress empfehlen bzw. verlangen. Impfausweis mit Chip abgleichen.",
+ k:["eigene Anforderungen erlaubt, im Vertrag","Core: Staupe, Parvo, Lepto","Zwingerhusten wegen Gruppen / Stress","Ausweis mit Chip abgleichen"]},
+{c:"gesund",t:"open",p:6,q:"Welche „Reisekrankheiten“ sind in Deutschland schon heimisch und wie werden sie vor allem eingeschleppt?",
+ m:"Heimisch: Babesiose, Ehrlichiose, Anaplasmose. Bei der Leishmaniose fehlen noch die Vektoren. Eingeschleppt vor allem durch den Import von Tieren aus betroffenen Ländern (Urlaub ist unbedeutend). Durch Tiertransporte können getilgt geglaubte Krankheiten (Tollwut, Staupe, HCC) zurückkommen.",
+ k:["Babesiose, Ehrlichiose, Anaplasmose","Leishmaniose: Vektor fehlt noch","Import von Tieren","Rückkehr getilgter Krankheiten"]},
+
+// ---- LERNEN: offen ----
+{c:"lernen",t:"open",p:8,q:"Ordnen Sie den vier Quadranten der operanten Konditionierung jeweils ein Gefühl und ein Beispiel zu.",
+ m:"Positive Verstärkung: Freude (Sitz → Leckerli). Negative Verstärkung: Erleichterung (Sitz → Leinenzug hört auf). Positive Strafe: Angst, Schmerz (Sitz → Schimpfen). Negative Strafe: Frustration (Hochspringen → Mensch dreht sich weg).",
+ k:["+V: Freude + Beispiel","−V: Erleichterung + Beispiel","+S: Angst / Schmerz + Beispiel","−S: Frustration + Beispiel"]},
+{c:"lernen",t:"open",p:6,q:"Ein Hund bellt am Zaun, der Briefträger geht weiter – das Bellen wird immer häufiger. Erklären Sie das lerntheoretisch.",
+ m:"Negative Verstärkung: Aus Sicht des Hundes verschwindet der unangenehme Reiz (Briefträger) nach dem Bellen. Etwas wird entfernt (negativ), das Verhalten nimmt zu (Verstärkung). Der Hund „lernt“, dass Bellen wirkt.",
+ k:["negative Verstärkung","Reiz verschwindet = negativ","Verhalten nimmt zu = Verstärkung","Hund verknüpft Bellen mit Erfolg"]},
+{c:"lernen",t:"open",p:6,q:"Ein Trainer setzt einen Hund mit Böllerangst lauten Knallern aus, „damit er sich daran gewöhnt“. Bewerten Sie das.",
+ m:"Falsch. Bei Reizen, die den Schreckreflex auslösen, droht Sensibilisierung statt Habituation: Die Angst wird stärker, auch bei leisen Knallern. Tierschutzrelevant (Leiden). Besser: sehr leise beginnen, unter der Angstschwelle, mit positiver Verknüpfung (Gegenkonditionierung).",
+ k:["falsch / gefährlich","Sensibilisierung statt Habituation","Angst wird stärker","besser: unter der Schwelle, positiv verknüpfen"]},
+{c:"lernen",t:"open",p:6,q:"Wie definiert der Kurs „Lernen“ und welche Lernformen unterscheidet man?",
+ m:"Lernen = Verhaltensanpassung an eine sich verändernde Umwelt als Folge von Erfahrungen; findet immer statt. Nicht-assoziativ: Habituation, Sensibilisierung. Assoziativ: klassische Konditionierung (Pawlow), operante / instrumentelle Konditionierung (Skinner).",
+ k:["Definition","nicht-assoziativ: Habituation / Sensibilisierung","klassisch (Pawlow)","operant (Skinner)"]},
+
+// ---- KÖRPERSPRACHE: offen ----
+{c:"sprache",t:"open",p:8,q:"Nennen und erklären Sie die „4 F“ bei Bedrohung.",
+ m:"Fight (kämpfen, Abwehr), Flight (fliehen), Freeze (erstarren), Flirt (beschwichtigen, „herumalbern“, Übersprung). Welche Strategie ein Hund wählt, hängt von Situation, Erfahrung und Rückzugsmöglichkeit ab.",
+ k:["Fight","Flight","Freeze","Flirt"]},
+{c:"sprache",t:"open",p:6,need:6,q:"Nennen Sie sechs Stresszeichen beim Hund.",
+ m:"Hecheln, Züngeln, Gähnen, Abwenden, unsteter Blick, Speicheln, Einfrieren, Fiepen, keine Reaktion auf gut gelernte Signale, Rute tief, Ohren nach hinten.",
+ k:["Hecheln","Züngeln","Abwenden / unsteter Blick","Speicheln","Einfrieren","Fiepen","keine Reaktion auf Signale"]},
+{c:"sprache",t:"open",p:8,q:"Woran unterscheiden Sie sicheres (offensives) und unsicheres (defensives) Drohen? Welcher Hund ist gefährlicher, wenn man näher kommt?",
+ m:"Sicher / offensiv: kurzer, runder Lefzenspalt, nur vordere Zähne sichtbar, Körper nach vorne. Unsicher / defensiv: langer, spitzer Lefzenspalt, auch hintere Zähne, Ohren zurück, Körper eher zurück. Ein unsicher drohender Hund geht bei weiterer Annäherung leicht in den Angriff über. Oft ambivalent gemischt – immer den ganzen Körper lesen.",
+ k:["offensiv: kurzer, runder Lefzenspalt","defensiv: langer, spitzer Lefzenspalt","unsicherer Hund greift bei Annäherung an","ganzen Körper lesen / ambivalent"]},
+{c:"sprache",t:"open",p:6,q:"Was ist der Unterschied zwischen aktiver und passiver Demut?",
+ m:"Aktive Demut: geht zum Partner hin, z. B. Maulwinkellecken (aus dem Futterbetteln der Welpen), dient der Beschwichtigung. Passive Demut: Reaktion auf Bedrohung oder starken Stress, Hinlegen, Rückenlage, Urinieren, Fiepen; Ziel: Abstand vergrößern, Bedrohung beenden.",
+ k:["aktiv: zum Partner hin","Maulwinkellecken","passiv: Rückenlage / Urinieren","Ziel passiv: Bedrohung beenden"]},
+{c:"sprache",t:"open",p:8,q:"Welche Funktionen hat Spiel und warum kann Spiel in der Hundegruppe „kippen“? Was tun Sie?",
+ m:"Funktionen: Bewegungsabläufe und Kommunikation üben, Energie abbauen, Sexualpartner testen, Spaß. Kippen: Funktionskreise vermischen sich (z. B. Jagd), Größe, Rassen und Spielweisen passen nicht (kleiner quietschender Hund löst Jagdverhalten aus), Mobbing. Maßnahmen: Gruppen passend zusammenstellen, beaufsichtigen, Pausen, früh unterbrechen.",
+ k:["Funktionen (üben, Energie, Spaß)","Funktionskreise vermischen sich / Jagd","Größe / Spielweise passt nicht","Gruppen passend, beaufsichtigen, früh unterbrechen"]},
+{c:"sprache",t:"open",p:6,q:"Warum ist die „Alpha-Rolle“ falsch? Begründen Sie.",
+ m:"Der Hund wird gewaltsam auf den Rücken gezwungen. Das ist keine freiwillige passive Demut, sondern macht Angst, erhöht das Beißrisiko und belastet die Beziehung. Grundlage ist die überholte Dominanztheorie.",
+ k:["Hund wird gezwungen","nicht freiwillige Demut","Angst / Beißrisiko / Beziehung","überholte Dominanztheorie"]},
+{c:"sprache",t:"open",p:4,q:"Was zeigte die Studie mit 1.380 Personen zum Erkennen von Hundeverhalten?",
+ m:"Aggressives Verhalten wurde nur von 23 % erkannt, 34 % hielten es für Spiel. Erfahrung mit Hunden allein ist kein Indikator für Kompetenz.",
+ k:["nur 23 % erkannten Aggression","34 % hielten es für Spiel","Erfahrung ≠ Kompetenz"]},
+{c:"sprache",t:"open",p:6,q:"Was sind Calming Signals? Nennen Sie Beispiele und was die Untersuchung mit 24 Hunden zeigte.",
+ m:"Beschwichtigungssignale nach Turid Rugaas: Gähnen, Kopf abwenden, Züngeln, Schnüffeln, Pfote heben, im Bogen gehen, langsame Bewegungen, Hinsetzen. Studie mit 24 Hunden: kommen signifikant häufiger nach aggressivem Verhalten vor; danach endet der Konflikt mit hoher Wahrscheinlichkeit.",
+ k:["Definition / Turid Rugaas","mind. 3 Beispiele","häufiger nach Aggression","Konflikt endet danach"]},
+
+// ---- WELPEN / SOZIALVERHALTEN: offen ----
+{c:"welpen",t:"open",p:8,q:"Beschreiben Sie primäre und sekundäre Sozialisation. Warum ist die Abgabe erst nach der 8. Woche sinnvoll?",
+ m:"Primäre Sozialisation 3. – 7. Woche: erste Bindung an die Mutter („secure base“), Kontakt zu Geschwistern und Menschen (Neugier bis ca. 5. Woche, danach Angst vor Unbekanntem). Sekundäre Sozialisation ab der 7. Woche, läuft ab ca. 12. / 14. Woche aus. Nach der 8. Woche: Beißhemmung und Hundesprache mit Mutter und Wurfgeschwistern; rechtlich § 2 Abs. 4 TierSchHuV.",
+ k:["primär 3. – 7. Woche","sekundär ab 7. Woche, Ende ca. 12. / 14.","Lernen mit Mutter / Geschwistern (Beißhemmung)","§ 2 Abs. 4 TierSchHuV"]},
+{c:"welpen",t:"open",p:6,q:"Was können neugeborene Welpen schon und was nicht? Warum soll man sie nicht pauschal an die Zitze anlegen?",
+ m:"Neonatal (bis 13. Tag): blind und taub, keine eigene Temperaturregelung (erst ab ca. 3 Wochen). Vorhanden: Geschmack, Geruch, Tast- und Temperatursinn, Gleichgewicht. Bei der Suche nach der Milchquelle machen sie erste Erfahrungen mit Erfolg (Lernen durch Erfolg und Misserfolg). Schwachen Welpen hilft man natürlich.",
+ k:["blind und taub","keine eigene Temperaturregelung","Geschmack, Geruch, Tasten, Gleichgewicht","erste Erfolgserfahrung"]},
+{c:"welpen",t:"open",p:6,q:"Wie lernt ein Welpe die Beißhemmung und was folgt daraus für die Zeit nach der Abgabe?",
+ m:"Durch die Reaktionen der Spielpartner (Mutter, Geschwister, andere Hunde). Kommunikation ist nur als Basis angeboren und muss gelernt werden, auch die Ausdrucksformen anderer Rassen. Deshalb Kontakt zu passenden Hunden auch nach der 8. Woche fortsetzen.",
+ k:["Reaktion der Spielpartner","Kommunikation muss gelernt werden","Kontakte nach der 8. Woche fortsetzen"]},
+{c:"welpen",t:"open",p:6,q:"Ein Trainer sagt: „Ihr Hund zieht an der Leine, weil er Sie dominieren will.“ Bewerten Sie diese Aussage.",
+ m:"Falsch. Dominanz ist keine Eigenschaft, sondern ein Verhältnis zwischen zwei Individuen bezogen auf Ressourcen; es hängt von Situation, Ort und Ressource ab. Hund und Mensch bilden kein Rudel. Leinenziehen ist gelernt (Ziehen bringt den Hund ans Ziel = Verstärkung).",
+ k:["falsch","Dominanz = Verhältnis, Ressourcen","kein Hund-Mensch-Rudel","Leinenziehen ist gelernt / verstärkt"]},
+{c:"welpen",t:"open",p:6,q:"Ein Kundenhund knurrt und hat schon geschnappt. Wie gehen Sie als Dogsitter vor?",
+ m:"Management und Eigensicherung: Situationen nicht eskalieren lassen, Abstand geben, Maulkorb mit Maulkorbtraining, nicht zwanghaft und nicht allein handeln. Knurren nicht bestrafen (Hauptfaktor für Biss ist Angst). Halter informieren, an Tierarzt oder qualifizierten Trainer verweisen, dokumentieren.",
+ k:["nicht eskalieren, Abstand","Maulkorb / Maulkorbtraining","nicht allein / nicht zwanghaft","Fachleute empfehlen, Halter informieren"]},
+{c:"welpen",t:"open",p:6,q:"Warum ist eine reizarme Aufzucht tierschutzrelevant?",
+ m:"Deprivationssyndrom: alle Folgen einer reizarmen Aufzucht, z. B. viel Angst vor Neuem, Stresssystem dauerhaft aktiv. Die Defizite sind nicht reversibel. Das bedeutet dauerhaftes Leiden im Sinne des TierSchG.",
+ k:["Deprivationssyndrom","Angst / Dauerstress","nicht reversibel","= Leiden, tierschutzrelevant"]},
+
+// ---- RASSEN: offen ----
+{c:"rassen",t:"open",p:6,q:"Was bedeutet Tinbergens Satz „Verhalten ist zu 100 % angeboren und zu 100 % erlernt“ für die Beurteilung eines Hundes?",
+ m:"Genetik und Umwelt wirken immer zusammen; man kann sie nicht in Prozente aufteilen. Die meisten Verhaltensmerkmale werden polygen vererbt und hängen von der Umwelt ab. Rasse gibt nur eine Tendenz, die Unterschiede innerhalb einer Rasse sind groß (z. B. Show- und Arbeitslinie).",
+ k:["Gene und Umwelt zusammen","polygen","Rasse = Tendenz","große Unterschiede innerhalb der Rasse"]},
+{c:"rassen",t:"open",p:6,q:"Erklären Sie Hüteverhalten als Teil der Jagdsequenz.",
+ m:"Hüten = Jagdverhalten ohne die Endphase (kein Töten). Aufspüren / Verfolgen: Eye (Fixieren), Cast (Umrunden). Vorstehen / Stellen: Herding. Packen: Heeling (in die Fersen zwicken).",
+ k:["Jagd ohne Endphase","Eye / Cast","Herding","Heeling = Packen"]}
+];
 </script>
 <script>
 (function(){
   "use strict";
   Q.forEach(function(q,i){ q.id = q.c + "-" + i; });
   const byId = {}; Q.forEach(function(q){ byId[q.id]=q; });
-  const EXAM = new Date("2026-11-23T10:30:00+01:00");
   const $ = function(id){ return document.getElementById(id); };
   const esc = function(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];}); };
+  const PASS = 70;
+  const N_OPEN = 25, N_MC = 11, EXAM_MIN = 60;
+  // Verteilung der Simulation (offen / Auswahl) – Recht und Transport stärker gewichtet
+  const OPEN_QUOTA = {recht:7, transport:3, gesund:3, sprache:3, welpen:2, lernen:2, fort:2, koerper:1, futter:1, rassen:1};
+  const MC_QUOTA   = {recht:3, transport:1, gesund:1, sprache:1, welpen:1, lernen:1, fort:1, koerper:1, futter:1};
 
-  // ---- storage (optional) ----
+  // ---- Punkte ----
+  function pts(q){
+    if(q.p) return q.p;
+    if(q.t==="mc") return 2;
+    if(q.t==="multi") return Math.min(5, q.a.length+1);
+    return Math.min(12, Math.max(4, q.k.length*2));
+  }
+  function need(q){ return Math.min(q.need || q.k.length, q.k.length); }
+  function qText(q){ return q.q.replace(/\s*\(mehrere richtig\)/,"").replace(/\s*⚑/g,""); }
+  function fmt(n){ return (Math.round(n*10)/10).toString().replace(".",","); }
+
+  // Bewertung einer Antwort: earned = Punkte ohne Abzug, penal = Punkte mit Abzug, full = volle Punktzahl
+  function grade(a){
+    const q=a.q, p=pts(q);
+    if(q.t==="open"){
+      const t = a.ticks ? a.ticks.filter(Boolean).length : 0;
+      const f = a.answered ? Math.min(1, t/need(q)) : 0;
+      const earned = Math.round(p*f*2)/2;
+      return {p:p, earned:earned, penal: f===0 ? -p : earned, full: f===1, f:f};
+    }
+    const ok = a.answered && sameSet(new Set(a.sel), q.a);
+    return {p:p, earned: ok?p:0, penal: ok?p:-p, full: ok, f: ok?1:0};
+  }
+  function sameSet(a,b){ if(a.size!==b.length) return false; return b.every(function(x){ return a.has(x); }); }
+
+  // ---- Speicher (optional) ----
   const KEY = "skn11-quiz-v1";
-  function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)||"{}"); return {wrong:s.wrong||[], last:s.last??null}; }catch(e){ return {wrong:[],last:null}; } }
+  function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)||"{}"); return {wrong:s.wrong||[], last:s.last??null, seen:s.seen||{}}; }catch(e){ return {wrong:[],last:null,seen:{}}; } }
   function save(st){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
   let store = load();
   store.wrong = store.wrong.filter(function(id){ return byId[id]; });
 
-  // ---- helpers ----
   function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-  function show(v){ ["v-start","v-quiz","v-result"].forEach(function(x){ $(x).classList.toggle("hidden", x!==v); }); window.scrollTo(0,0); }
+  function show(v){ ["v-start","v-exam","v-grade","v-quiz","v-result"].forEach(function(x){ $(x).classList.toggle("hidden", x!==v); }); $("ov-btn").classList.toggle("hidden", v!=="v-exam"); window.scrollTo(0,0); }
 
-  // ---- start screen ----
+  // ---- Startseite ----
   const selected = new Set(Object.keys(CATS));
   function renderStart(){
-    const days = Math.ceil((EXAM - new Date())/86400000);
-    $("countdown").textContent = days > 1 ? (days + " giorni all'esame") : days === 1 ? "Esame domani" : days === 0 ? "Esame oggi" : "Esame passato";
     $("s-total").textContent = Q.length;
+    $("s-open").textContent = Q.filter(function(q){return q.t==="open";}).length;
     $("s-wrong").textContent = store.wrong.length;
     $("s-last").textContent = store.last == null ? "–" : store.last + " %";
     $("m-err").disabled = store.wrong.length === 0;
-    $("m-err-p").textContent = store.wrong.length ? ("Hai " + store.wrong.length + " domande sbagliate da rifare. Escono dalla lista quando rispondi giusto.") : "Nessun errore salvato per ora: fai prima un allenamento o una simulazione.";
+    $("m-err-p").textContent = store.wrong.length ? (store.wrong.length + " Fragen ohne volle Punktzahl. Sie verschwinden aus der Liste, sobald Sie sie voll richtig beantworten.") : "Noch keine Fehler gespeichert. Machen Sie zuerst eine Simulation oder den Lernmodus.";
     const box = $("chips"); box.innerHTML = "";
     Object.keys(CATS).forEach(function(k){
       const n = Q.filter(function(q){ return q.c===k; }).length;
@@ -809,95 +1249,218 @@ const Q = [
   }
   $("all-btn").addEventListener("click", function(){ if(selected.size===Object.keys(CATS).length){ selected.clear(); } else { Object.keys(CATS).forEach(function(k){ selected.add(k); }); } renderStart(); });
 
-  // ---- session ----
-  let S = null, timerId = null;
-  function start(list, mode){
-    S = {mode:mode, list:list, i:0, answers:[], checked:false, sel:new Set(), end: mode==="sim" ? Date.now()+60*60000 : null};
-    show("v-quiz");
-    $("timer").classList.toggle("hidden", mode!=="sim");
-    clearInterval(timerId);
-    if(mode==="sim"){ tick(); timerId = setInterval(tick, 1000); }
-    renderQ();
+  // =====================================================================
+  // PRÜFUNGSSIMULATION
+  // =====================================================================
+  let E = null, timerId = null, ovFilter = "all";
+
+  function pickFrom(pool, n, used){
+    // zuerst Fragen, die seltener vorkamen
+    const arr = shuffle(pool.filter(function(q){ return !used.has(q.id); }));
+    arr.sort(function(a,b){ return (store.seen[a.id]||0) - (store.seen[b.id]||0); });
+    const out = arr.slice(0,n); out.forEach(function(q){ used.add(q.id); }); return out;
   }
-  function tick(){
-    const left = Math.max(0, S.end - Date.now());
-    const m = Math.floor(left/60000), s = Math.floor(left/1000)%60;
-    $("timer").textContent = "⏱ " + m + ":" + String(s).padStart(2,"0");
-    $("timer").classList.toggle("low", left < 5*60000);
-    if(left===0){ clearInterval(timerId); finish(); }
+  function buildSim(){
+    const used = new Set(); let open = [], mc = [];
+    Object.keys(OPEN_QUOTA).forEach(function(k){ open = open.concat(pickFrom(Q.filter(function(q){return q.c===k && q.t==="open";}), OPEN_QUOTA[k], used)); });
+    if(open.length < N_OPEN) open = open.concat(pickFrom(Q.filter(function(q){return q.t==="open";}), N_OPEN-open.length, used));
+    Object.keys(MC_QUOTA).forEach(function(k){ mc = mc.concat(pickFrom(Q.filter(function(q){return q.c===k && q.t!=="open";}), MC_QUOTA[k], used)); });
+    if(mc.length < N_MC) mc = mc.concat(pickFrom(Q.filter(function(q){return q.t!=="open";}), N_MC-mc.length, used));
+    return shuffle(open.slice(0,N_OPEN).concat(mc.slice(0,N_MC)));
   }
 
   $("m-sim").addEventListener("click", function(){
-    const mc = shuffle(Q.filter(function(q){ return q.t!=="open"; }));
-    // balanced draw: at least 2 per category, rest random
-    const pick = []; const used = new Set();
-    Object.keys(CATS).forEach(function(k){ mc.filter(function(q){return q.c===k;}).slice(0, k==="recht"?5:2).forEach(function(q){ pick.push(q); used.add(q.id); }); });
-    mc.forEach(function(q){ if(pick.length<30 && !used.has(q.id)){ pick.push(q); used.add(q.id); } });
-    const op = shuffle(Q.filter(function(q){ return q.t==="open"; })).slice(0,5);
-    start(shuffle(pick.slice(0,30)).concat(op), "sim");
+    const list = buildSim();
+    list.forEach(function(q){ store.seen[q.id] = (store.seen[q.id]||0)+1; }); save(store);
+    E = {
+      list: list, i: 0, start: Date.now(), end: Date.now()+EXAM_MIN*60000, done:false,
+      ans: list.map(function(q){ return {q:q, sel:[], text:"", flag:false, order: q.t==="open" ? null : shuffle(q.o.map(function(_,i){return i;}))}; })
+    };
+    $("e-total").textContent = E.list.reduce(function(s,q){ return s+pts(q); },0);
+    show("v-exam"); tick(); clearInterval(timerId); timerId = setInterval(tick, 1000);
+    renderExamQ();
   });
+
+  function answered(a){ return a.q.t==="open" ? a.text.trim().length>0 : a.sel.length>0; }
+
+  function tick(){
+    if(!E || E.done) return;
+    const left = Math.max(0, E.end - Date.now());
+    const m = Math.floor(left/60000), s = Math.floor(left/1000)%60;
+    $("e-timer").textContent = "⏱ " + m + ":" + String(s).padStart(2,"0");
+    $("e-timer").classList.toggle("low", left < 5*60000);
+    if(left===0){ submitExam(true); }
+  }
+
+  function saveCurrent(){
+    if(!E) return;
+    const a = E.ans[E.i];
+    if(a.q.t==="open"){ const ta = $("e-ans"); if(ta) a.text = ta.value; }
+  }
+
+  function renderExamQ(){
+    const a = E.ans[E.i], q = a.q;
+    $("e-count").textContent = "Frage " + (E.i+1) + " von " + E.list.length;
+    $("e-bar").style.width = (E.ans.filter(answered).length / E.list.length * 100) + "%";
+    let h = '<div class="qhead"><span class="tag">Frage '+(E.i+1)+' · '+pts(q)+' Punkte</span>' + (a.flag ? '<span class="flagmark" title="markiert">⚑ markiert</span>' : '') + '</div>';
+    h += '<p class="q">'+esc(qText(q))+'</p>';
+    if(q.t==="open"){
+      h += '<label class="small" for="e-ans">Ihre Antwort</label><textarea id="e-ans" placeholder="Antwort …">'+esc(a.text)+'</textarea>';
+    } else {
+      h += '<div class="small">Eine oder mehrere Antworten können richtig sein.</div>';
+      h += '<div class="opts">' + a.order.map(function(oi,pos){ return '<button type="button" class="opt multi'+(a.sel.indexOf(oi)>=0?" sel":"")+'" data-oi="'+oi+'" aria-pressed="'+(a.sel.indexOf(oi)>=0)+'"><span class="k">'+(pos+1)+'</span><span>'+esc(q.o[oi])+'</span></button>'; }).join("") + '</div>';
+    }
+    $("e-card").innerHTML = h;
+    $("e-card").querySelectorAll(".opt").forEach(function(b){ b.addEventListener("click", function(){
+      const oi = +b.dataset.oi, k = a.sel.indexOf(oi);
+      if(k>=0) a.sel.splice(k,1); else a.sel.push(oi);
+      b.classList.toggle("sel", k<0); b.setAttribute("aria-pressed", String(k<0));
+      updateExamBits();
+    }); });
+    const ta = $("e-ans"); if(ta){ ta.addEventListener("input", function(){ a.text = ta.value; updateExamBits(); }); }
+    $("e-prev").disabled = E.i===0;
+    $("e-next").textContent = E.i===E.list.length-1 ? "Zur Übersicht" : "Weiter →";
+    $("e-flag").textContent = a.flag ? "⚑ Markierung entfernen" : "⚑ Markieren";
+    $("e-flag").classList.toggle("on", a.flag);
+    updateExamBits();
+  }
+  function updateExamBits(){
+    const nA = E.ans.filter(answered).length, nF = E.ans.filter(function(a){return a.flag;}).length;
+    $("ov-btn").innerHTML = '☰ Übersicht <small>'+nA+'/'+E.list.length+(nF?' · ⚑ '+nF:'')+'</small>';
+    $("e-bar").style.width = (nA / E.list.length * 100) + "%";
+  }
+  function goTo(i){ saveCurrent(); E.i = i; renderExamQ(); window.scrollTo(0,0); }
+  $("e-prev").addEventListener("click", function(){ if(E.i>0) goTo(E.i-1); });
+  $("e-next").addEventListener("click", function(){ if(E.i<E.list.length-1) goTo(E.i+1); else openOverview(); });
+  $("e-flag").addEventListener("click", function(){ saveCurrent(); E.ans[E.i].flag = !E.ans[E.i].flag; renderExamQ(); });
+
+  // ---- Übersicht ----
+  function openOverview(){ saveCurrent(); renderOverview(); $("ov").classList.remove("hidden"); $("ov-close").focus(); }
+  function closeOverview(){ $("ov").classList.add("hidden"); }
+  function renderOverview(){
+    const cnt = {all:E.list.length, done:0, open:0, flag:0};
+    E.ans.forEach(function(a){ if(answered(a)) cnt.done++; else cnt.open++; if(a.flag) cnt.flag++; });
+    const labels = {all:"Alle", done:"Beantwortet", open:"Unbeantwortet", flag:"Markiert"};
+    $("ov-tabs").innerHTML = Object.keys(labels).map(function(k){ return '<button type="button" class="tab'+(ovFilter===k?" on":"")+'" data-f="'+k+'">'+labels[k]+' <small>'+cnt[k]+'</small></button>'; }).join("");
+    $("ov-tabs").querySelectorAll(".tab").forEach(function(b){ b.addEventListener("click", function(){ ovFilter = b.dataset.f; renderOverview(); }); });
+    $("ov-grid").innerHTML = E.ans.map(function(a,i){
+      const isA = answered(a);
+      const vis = ovFilter==="all" || (ovFilter==="done"&&isA) || (ovFilter==="open"&&!isA) || (ovFilter==="flag"&&a.flag);
+      if(!vis) return "";
+      return '<button type="button" class="cell'+(isA?" done":"")+(a.flag?" flag":"")+(i===E.i?" cur":"")+'" data-i="'+i+'" aria-label="Frage '+(i+1)+(isA?", beantwortet":", unbeantwortet")+(a.flag?", markiert":"")+'"><b>'+(i+1)+'</b><small>'+(a.q.t==="open"?"offen":"Auswahl")+' · '+pts(a.q)+' P.</small>'+(a.flag?'<i>⚑</i>':'')+'</button>';
+    }).join("") || '<p class="small">Keine Fragen in dieser Ansicht.</p>';
+    $("ov-grid").querySelectorAll(".cell").forEach(function(b){ b.addEventListener("click", function(){ closeOverview(); goTo(+b.dataset.i); }); });
+  }
+  $("ov-btn").addEventListener("click", openOverview);
+  $("ov-close").addEventListener("click", closeOverview);
+  $("ov-submit").addEventListener("click", function(){ closeOverview(); askSubmit(); });
+  $("e-submit").addEventListener("click", function(){ saveCurrent(); askSubmit(); });
+
+  // ---- Bestätigungsdialog ----
+  let confirmAction = null;
+  function confirmBox(title, text, okLabel, action){
+    $("cf-title").textContent = title; $("cf-text").innerHTML = text; $("cf-ok").textContent = okLabel;
+    confirmAction = action; $("cf").classList.remove("hidden"); $("cf-cancel").focus();
+  }
+  $("cf-cancel").addEventListener("click", function(){ $("cf").classList.add("hidden"); confirmAction=null; });
+  $("cf-ok").addEventListener("click", function(){ $("cf").classList.add("hidden"); const f=confirmAction; confirmAction=null; if(f) f(); });
+
+  function askSubmit(){
+    const nO = E.ans.filter(function(a){return !answered(a);}).length, nF = E.ans.filter(function(a){return a.flag;}).length;
+    let t = "";
+    if(nO) t += '<b>'+nO+' Fragen sind nicht beantwortet.</b> Leere Antworten zählen wie falsche. ';
+    if(nF) t += nF+' Fragen sind markiert. ';
+    t += 'Nach der Abgabe können Sie nichts mehr ändern.';
+    confirmBox("Prüfung abgeben?", t, "Jetzt abgeben", function(){ submitExam(false); });
+  }
+  $("e-quit").addEventListener("click", function(){
+    confirmBox("Simulation abbrechen?", "Die Antworten werden nicht gewertet.", "Abbrechen und zurück", function(){ clearInterval(timerId); E=null; renderStart(); show("v-start"); });
+  });
+
+  function submitExam(timeout){
+    if(!E || E.done) return;
+    saveCurrent(); E.done = true; E.used = Math.min(EXAM_MIN*60000, Date.now()-E.start); E.timeout = timeout;
+    clearInterval(timerId); closeOverview(); $("cf").classList.add("hidden");
+    renderGrading();
+  }
+
+  // ---- Korrektur der offenen Fragen ----
+  function renderGrading(){
+    const opens = E.ans.map(function(a,i){ return {a:a,i:i}; }).filter(function(x){ return x.a.q.t==="open"; });
+    $("g-intro").textContent = (E.timeout ? "Die Zeit ist abgelaufen. " : "") + "Vergleichen Sie jede offene Antwort mit der Musterlösung und haken Sie nur die Punkte an, die wirklich in Ihrer Antwort stehen. Bewerten Sie streng, wie ein Prüfer.";
+    $("g-list").innerHTML = opens.map(function(x){
+      const a=x.a, q=a.q, has = answered(a), nd = need(q);
+      a.ticks = q.k.map(function(){ return false; });
+      return '<div class="gitem" data-i="'+x.i+'"><div class="qhead"><span class="tag">Frage '+(x.i+1)+' · '+pts(q)+' Punkte</span><span class="gp" id="gp'+x.i+'"></span></div>'+
+        '<p class="q">'+esc(qText(q))+'</p>'+
+        '<p class="lbl">Ihre Antwort</p><div class="yours">'+(has?esc(a.text):'<em>— keine Antwort —</em>')+'</div>'+
+        '<div class="model"><h4>Musterlösung</h4>'+esc(q.m)+'</div>'+
+        '<p class="lbl">Bewertungspunkte'+(nd<q.k.length?' (volle Punktzahl ab '+nd+' von '+q.k.length+')':'')+'</p>'+
+        '<div class="checks">'+q.k.map(function(k,j){ return '<label><input type="checkbox" data-j="'+j+'"'+(has?'':' disabled')+'> '+esc(k)+'</label>'; }).join("")+'</div></div>';
+    }).join("");
+    opens.forEach(function(x){
+      const el = document.querySelector('.gitem[data-i="'+x.i+'"]');
+      el.querySelectorAll("input").forEach(function(cb){ cb.addEventListener("change", function(){ x.a.ticks[+cb.dataset.j] = cb.checked; updG(x); }); });
+      updG(x);
+    });
+    function updG(x){ const g = grade(Object.assign({answered:answered(x.a)}, x.a)); $("gp"+x.i).textContent = fmt(g.earned) + " / " + g.p + " P."; }
+    show("v-grade");
+  }
+  $("g-done").addEventListener("click", function(){
+    const res = E.ans.map(function(a){ return Object.assign({}, a, {answered: answered(a)}); });
+    E = null;
+    finish(res, "sim");
+  });
+
+  // =====================================================================
+  // LERNMODUS
+  // =====================================================================
+  let S = null;
   $("m-train").addEventListener("click", function(){
-    let pool = Q.filter(function(q){ return selected.has(q.c) && ($("open-chk").checked || q.t!=="open"); });
+    const ty = $("type-sel").value;
+    let pool = Q.filter(function(q){ return selected.has(q.c) && (ty==="all" || (ty==="open" ? q.t==="open" : q.t!=="open")); });
     const n = +$("n-sel").value; pool = shuffle(pool); if(n) pool = pool.slice(0,n);
-    if(!pool.length) return; start(pool, "train");
+    if(!pool.length) return; startTrain(pool);
   });
-  $("m-err").addEventListener("click", function(){ const pool = shuffle(store.wrong.map(function(id){ return byId[id]; })); if(pool.length) start(pool, "train"); });
-  $("quit").addEventListener("click", function(){ if(S.answers.length) finish(); else { clearInterval(timerId); renderStart(); show("v-start"); } });
+  $("m-err").addEventListener("click", function(){ const pool = shuffle(store.wrong.map(function(id){ return byId[id]; })); if(pool.length) startTrain(pool); });
+  function startTrain(list){ S = {list:list, i:0, res:[]}; show("v-quiz"); renderQ(); }
+  $("quit").addEventListener("click", function(){ if(S.res.length) finish(S.res, "train"); else { renderStart(); show("v-start"); } });
 
   function renderQ(){
-    const q = S.list[S.i]; S.checked=false; S.sel=new Set();
-    $("q-count").textContent = "Domanda " + (S.i+1) + " di " + S.list.length;
+    const q = S.list[S.i]; S.checked=false; S.sel=[];
+    S.order = q.t==="open" ? null : shuffle(q.o.map(function(_,i){return i;}));
+    $("q-count").textContent = "Frage " + (S.i+1) + " von " + S.list.length;
     $("q-bar").style.width = (S.i / S.list.length * 100) + "%";
-    const c = $("q-card");
-    let h = '<span class="tag">'+esc(CATS[q.c])+(q.t==="open"?" · domanda aperta":"")+'</span><p class="q">'+esc(q.q)+'</p>';
-    if(q.t==="multi") h += '<div class="hint">Più risposte corrette – seleziona tutte quelle giuste.</div>';
+    let h = '<span class="tag">'+esc(CATS[q.c])+' · '+(q.t==="open"?"offen":"Auswahl")+' · '+pts(q)+' Punkte</span><p class="q">'+esc(qText(q))+'</p>';
     if(q.t==="open"){
-      h += '<label class="small" for="ans">Scrivi la risposta in tedesco, senza guardare gli appunti.</label><textarea id="ans" placeholder="Antwort …"></textarea><div id="openfb"></div>';
+      h += '<label class="small" for="ans">Schreiben Sie Ihre Antwort, ohne in die Unterlagen zu schauen.</label><textarea id="ans" placeholder="Antwort …"></textarea><div id="openfb"></div>';
     } else {
-      if(!q._order) q._order = shuffle(q.o.map(function(_,i){return i;}));
-      h += '<div class="opts">' + q._order.map(function(oi,pos){ return '<button type="button" class="opt'+(q.t==="multi"?" multi":"")+'" data-oi="'+oi+'"><span class="k">'+(pos+1)+'</span><span>'+esc(q.o[oi])+'</span></button>'; }).join("") + '</div><div id="mcfb"></div>';
+      h += '<div class="small">Eine oder mehrere Antworten können richtig sein.</div>';
+      h += '<div class="opts">' + S.order.map(function(oi,pos){ return '<button type="button" class="opt multi" data-oi="'+oi+'" aria-pressed="false"><span class="k">'+(pos+1)+'</span><span>'+esc(q.o[oi])+'</span></button>'; }).join("") + '</div><div id="mcfb"></div>';
     }
     h += '<div class="actions"><span></span><button class="btn" type="button" id="next"></button></div>';
-    c.innerHTML = h;
-    q._order = null;
-    c.querySelectorAll(".opt").forEach(function(b){ b.addEventListener("click", function(){ pick(+b.dataset.oi); }); });
-    updateNextBtn();
+    $("q-card").innerHTML = h;
+    $("q-card").querySelectorAll(".opt").forEach(function(b){ b.addEventListener("click", function(){
+      if(S.checked) return; const oi=+b.dataset.oi, k=S.sel.indexOf(oi);
+      if(k>=0) S.sel.splice(k,1); else S.sel.push(oi);
+      b.classList.toggle("sel", k<0); b.setAttribute("aria-pressed", String(k<0)); updateNextBtn();
+    }); });
     $("next").addEventListener("click", next);
-    const ta = $("ans"); if(ta) ta.addEventListener("input", updateNextBtn);
-  }
-  function pick(oi){
-    if(S.checked) return;
-    const q = S.list[S.i];
-    if(q.t==="multi"){ if(S.sel.has(oi)) S.sel.delete(oi); else S.sel.add(oi); }
-    else { S.sel = new Set([oi]); }
-    $("q-card").querySelectorAll(".opt").forEach(function(b){ b.classList.toggle("sel", S.sel.has(+b.dataset.oi)); });
     updateNextBtn();
   }
   function updateNextBtn(){
     const q = S.list[S.i], b = $("next"); if(!b) return;
     const last = S.i === S.list.length-1;
-    if(q.t==="open"){
-      if(!S.checked){ b.textContent = "Mostra la soluzione"; b.disabled = false; }
-      else { b.textContent = last ? "Vedi il risultato" : "Avanti →"; b.disabled=false; }
-    } else if(S.mode==="sim"){
-      b.textContent = last ? "Vedi il risultato" : "Avanti →"; b.disabled = S.sel.size===0;
-    } else {
-      b.textContent = S.checked ? (last ? "Vedi il risultato" : "Avanti →") : "Controlla"; b.disabled = !S.checked && S.sel.size===0;
-    }
+    if(q.t==="open"){ b.textContent = S.checked ? (last ? "Ergebnis anzeigen" : "Weiter →") : "Lösung zeigen"; b.disabled=false; }
+    else { b.textContent = S.checked ? (last ? "Ergebnis anzeigen" : "Weiter →") : "Prüfen"; b.disabled = false; }
   }
-  function sameSet(a,b){ if(a.size!==b.length) return false; return b.every(function(x){ return a.has(x); }); }
-
   function next(){
     const q = S.list[S.i];
     if(q.t==="open"){
       if(!S.checked){ revealOpen(q); return; }
-      const boxes = Array.from(document.querySelectorAll("#openfb input"));
-      const got = boxes.filter(function(x){return x.checked;}).length;
-      S.answers.push({q:q, score: boxes.length ? got/boxes.length : 0, text: $("ans").value, missed: q.k.filter(function(_,i){ return !boxes[i].checked; })});
-      return advance();
-    }
-    if(S.mode==="sim"){
-      S.answers.push({q:q, score: sameSet(S.sel,q.a)?1:0, sel:Array.from(S.sel)});
+      const ticks = Array.from(document.querySelectorAll("#openfb input")).map(function(x){ return x.checked; });
+      const text = $("ans").value;
+      S.res.push({q:q, text:text, ticks:ticks, answered: text.trim().length>0 || ticks.some(Boolean)});
       return advance();
     }
     if(!S.checked){ checkMC(q); return; }
@@ -905,80 +1468,96 @@ const Q = [
   }
   function checkMC(q){
     S.checked = true;
-    const ok = sameSet(S.sel, q.a);
+    const a = {q:q, sel:S.sel.slice(), answered:S.sel.length>0}, g = grade(a);
     $("q-card").querySelectorAll(".opt").forEach(function(b){
       const oi=+b.dataset.oi; b.disabled=true;
-      if(q.a.indexOf(oi)>=0) b.classList.add("right"); else if(S.sel.has(oi)) b.classList.add("wrong");
+      if(q.a.indexOf(oi)>=0) b.classList.add("right"); else if(S.sel.indexOf(oi)>=0) b.classList.add("wrong");
       b.classList.remove("sel");
     });
-    $("mcfb").innerHTML = '<div class="fb '+(ok?"ok":"no")+'"><b class="v">'+(ok?"Giusto.":"Sbagliato.")+'</b> '+esc(q.e)+'</div>';
-    S.answers.push({q:q, score: ok?1:0, sel:Array.from(S.sel)});
+    const v = !a.answered ? "Keine Antwort – zählt wie falsch." : g.full ? "Richtig." : "Falsch.";
+    $("mcfb").innerHTML = '<div class="fb '+(g.full?"ok":"no")+'"><b class="v">'+v+'</b> '+(q.a.length>1?'Richtig waren '+q.a.length+' Antworten. ':'')+esc(q.e)+'</div>';
+    S.res.push(a);
     updateNextBtn();
   }
   function revealOpen(q){
     S.checked = true;
     $("ans").readOnly = true;
-    $("openfb").innerHTML = '<div class="model"><h4>Risposta modello</h4>'+esc(q.m)+'</div><div class="model" style="background:transparent;border:1px solid var(--line)"><h4>Spunta i punti che hai scritto</h4><div class="checks">'+q.k.map(function(k,i){ return '<label for="k'+i+'"><input type="checkbox" id="k'+i+'"> '+esc(k)+'</label>'; }).join("")+'</div></div>';
+    const nd = need(q);
+    $("openfb").innerHTML = '<div class="model"><h4>Musterlösung</h4>'+esc(q.m)+'</div><div class="model" style="background:transparent;border:1px solid var(--line)"><h4>Haken Sie an, was Sie geschrieben haben'+(nd<q.k.length?' (volle Punktzahl ab '+nd+')':'')+'</h4><div class="checks">'+q.k.map(function(k,i){ return '<label for="k'+i+'"><input type="checkbox" id="k'+i+'"> '+esc(k)+'</label>'; }).join("")+'</div></div>';
     updateNextBtn();
   }
-  function advance(){
-    // update error list
-    const a = S.answers[S.answers.length-1];
-    const idx = store.wrong.indexOf(a.q.id);
-    if(a.score < 1 && idx<0) store.wrong.push(a.q.id);
-    if(a.score === 1 && idx>=0) store.wrong.splice(idx,1);
-    save(store);
-    if(S.i < S.list.length-1){ S.i++; renderQ(); } else finish();
-  }
+  function advance(){ if(S.i < S.list.length-1){ S.i++; renderQ(); window.scrollTo(0,0); } else finish(S.res, "train"); }
 
-  function finish(){
-    clearInterval(timerId);
-    const ans = S.answers;
-    const total = ans.length;
-    const pts = ans.reduce(function(s,a){ return s+a.score; },0);
-    const denom = S.mode==="sim" ? S.list.length : total;
-    const pct = denom ? Math.round(pts/denom*100) : 0;
-    const PASS = 70;
-    if(S.mode==="sim"){ store.last = pct; save(store); }
-    $("r-pct").textContent = pct + " %";
-    $("r-title").textContent = S.mode==="sim" ? (pct>=PASS ? "Superata (soglia 70 %)" : "Non superata (soglia 70 %)") : ("Allenamento finito · " + (pct>=PASS ? "sopra" : "sotto") + " il 70 %");
-    $("r-pct").style.color = pct>=PASS ? "var(--good)" : "var(--bad)";
-    const missedCount = ans.filter(function(a){return a.score<1;}).length;
-    $("r-sub").textContent = (Math.round(pts*10)/10).toString().replace(".",",") + " punti su " + total + " domande risposte" + (total < S.list.length ? " (su " + S.list.length + ")" : "") + " · " + missedCount + " da rivedere";
-    // per category
+  // =====================================================================
+  // ERGEBNIS
+  // =====================================================================
+  function finish(res, mode){
+    const rows = res.map(function(a){ return {a:a, g:grade(a)}; });
+    const total = rows.reduce(function(s,r){ return s+r.g.p; },0);
+    const earned = rows.reduce(function(s,r){ return s+r.g.earned; },0);
+    const penal = rows.reduce(function(s,r){ return s+r.g.penal; },0);
+    const pctA = total ? Math.round(earned/total*100) : 0;
+    const pctB = total ? Math.round(Math.max(0,penal)/total*100) : 0;
+    // Fehlerliste
+    rows.forEach(function(r){
+      const id = r.a.q.id, idx = store.wrong.indexOf(id);
+      if(!r.g.full && idx<0) store.wrong.push(id);
+      if(r.g.full && idx>=0) store.wrong.splice(idx,1);
+    });
+    if(mode==="sim") store.last = pctB;
+    save(store);
+
+    $("r-title").textContent = mode==="sim" ? "Ergebnis der Prüfungssimulation" : "Ergebnis Lernmodus";
+    const nEmpty = rows.filter(function(r){ return !r.a.answered; }).length;
+    $("r-sub").textContent = rows.length + " Fragen · " + total + " Punkte möglich" + (nEmpty ? " · " + nEmpty + " ohne Antwort" : "");
+    function box(lbl, sc, pct, note){
+      const ok = pct>=PASS;
+      return '<div class="sbox '+(ok?"ok":"no")+'"><span class="lbl">'+lbl+'</span><b>'+pct+' %</b><span>'+fmt(sc)+' von '+total+' Punkten</span><strong>'+(ok?"bestanden":"nicht bestanden")+' (ab 70 %)</strong><span class="small">'+note+'</span></div>';
+    }
+    $("r-boxes").innerHTML = box("Wertung mit Abzug", penal, pctB, "Falsche und leere Antworten kosten ihre Punkte – so, wie Sie die Prüfung erlebt haben.") + box("Wertung ohne Abzug", earned, pctA, "Nur richtige Punkte zählen, Fehler kosten nichts extra.");
+    // Themen
     const per = {};
-    ans.forEach(function(a){ const k=a.q.c; per[k]=per[k]||{p:0,n:0}; per[k].p+=a.score; per[k].n++; });
+    rows.forEach(function(r){ const k=r.a.q.c; per[k]=per[k]||{e:0,p:0}; per[k].e+=r.g.earned; per[k].p+=r.g.p; });
     $("r-cats").innerHTML = Object.keys(CATS).filter(function(k){return per[k];}).map(function(k){
-      const v = Math.round(per[k].p/per[k].n*100);
+      const v = Math.round(per[k].e/per[k].p*100);
       const col = v>=80 ? "var(--good)" : v>=50 ? "var(--warn)" : "var(--bad)";
       return '<div class="cat"><span>'+esc(CATS[k])+'</span><span class="track"><i style="width:'+v+'%;background:'+col+'"></i></span><em>'+v+' %</em></div>';
     }).join("");
-    // review
-    const rev = ans.filter(function(a){ return a.score<1; });
+    // Review
+    const rev = rows.filter(function(r){ return !r.g.full; });
     $("r-rev-h").classList.toggle("hidden", !rev.length);
     $("r-again").disabled = !rev.length;
-    $("r-review").innerHTML = rev.map(function(a){
-      const q=a.q;
+    $("r-review").innerHTML = rev.map(function(r){
+      const q=r.a.q, g=r.g;
+      const head = '<span class="tag">'+esc(CATS[q.c])+' · '+fmt(g.earned)+' / '+g.p+' P.'+(r.a.answered?'':' · keine Antwort')+'</span><p><b>'+esc(qText(q))+'</b></p>';
       if(q.t==="open"){
-        return '<div class="rv part"><span class="tag">'+esc(CATS[q.c])+' · aperta · '+Math.round(a.score*100)+' %</span><p><b>'+esc(q.q)+'</b></p>'+(a.text?'<p class="lbl">La tua risposta</p><p>'+esc(a.text)+'</p>':'')+'<p class="lbl">Punti mancanti</p><p>'+esc(a.missed.join(" · "))+'</p><p class="lbl">Risposta modello</p><p>'+esc(q.m)+'</p></div>';
+        const miss = q.k.filter(function(_,i){ return !(r.a.ticks && r.a.ticks[i]); });
+        return '<div class="rv'+(g.earned>0?" part":"")+'">'+head+(r.a.text&&r.a.text.trim()?'<p class="lbl">Ihre Antwort</p><p>'+esc(r.a.text)+'</p>':'')+'<p class="lbl">Fehlende Punkte</p><p>'+esc(miss.join(" · "))+'</p><p class="lbl">Musterlösung</p><p>'+esc(q.m)+'</p></div>';
       }
-      const yours = a.sel && a.sel.length ? a.sel.map(function(i){return q.o[i];}).join(" · ") : "nessuna";
-      return '<div class="rv"><span class="tag">'+esc(CATS[q.c])+'</span><p><b>'+esc(q.q)+'</b></p><p class="lbl">La tua risposta</p><p>'+esc(yours)+'</p><p class="lbl">Corretta</p><p>'+esc(q.a.map(function(i){return q.o[i];}).join(" · "))+'</p><p class="small">'+esc(q.e)+'</p></div>';
+      const yours = r.a.sel && r.a.sel.length ? r.a.sel.map(function(i){return q.o[i];}).join(" · ") : "keine";
+      return '<div class="rv">'+head+'<p class="lbl">Ihre Antwort</p><p>'+esc(yours)+'</p><p class="lbl">Richtig</p><p>'+esc(q.a.map(function(i){return q.o[i];}).join(" · "))+'</p><p class="small">'+esc(q.e)+'</p></div>';
     }).join("");
-    S.review = rev.map(function(a){return a.q;});
+    lastReview = rev.map(function(r){ return r.a.q; });
     show("v-result");
   }
-  $("r-again").addEventListener("click", function(){ if(S && S.review && S.review.length) start(shuffle(S.review), "train"); });
+  let lastReview = [];
+  $("r-again").addEventListener("click", function(){ if(lastReview.length) startTrain(shuffle(lastReview)); });
   $("r-home").addEventListener("click", function(){ renderStart(); show("v-start"); });
 
-  // keyboard
+  // ---- Tastatur ----
   document.addEventListener("keydown", function(e){
-    if($("v-quiz").classList.contains("hidden")) return;
-    if(e.target.tagName==="TEXTAREA") return;
+    if(e.key==="Escape"){ if(!$("cf").classList.contains("hidden")) $("cf-cancel").click(); else if(!$("ov").classList.contains("hidden")) closeOverview(); return; }
+    if(e.target.tagName==="TEXTAREA" || !$("cf").classList.contains("hidden") || !$("ov").classList.contains("hidden")) return;
+    const exam = !$("v-exam").classList.contains("hidden"), train = !$("v-quiz").classList.contains("hidden");
+    if(!exam && !train) return;
+    const card = exam ? $("e-card") : $("q-card");
     const n = parseInt(e.key,10);
-    if(n>=1 && n<=9){ const b = document.querySelectorAll(".opt")[n-1]; if(b && !b.disabled) b.click(); }
-    if(e.key==="Enter"){ const b=$("next"); if(b && !b.disabled){ e.preventDefault(); b.click(); } }
+    if(n>=1 && n<=9){ const b = card.querySelectorAll(".opt")[n-1]; if(b && !b.disabled) b.click(); }
+    if(exam && e.key==="ArrowRight" && E.i<E.list.length-1) goTo(E.i+1);
+    if(exam && e.key==="ArrowLeft" && E.i>0) goTo(E.i-1);
+    if(e.key==="Enter"){ const b = exam ? $("e-next") : $("next"); if(b && !b.disabled){ e.preventDefault(); b.click(); } }
   });
+  window.addEventListener("beforeunload", function(e){ if(E && !E.done){ e.preventDefault(); e.returnValue=""; } });
 
   renderStart();
 })();
