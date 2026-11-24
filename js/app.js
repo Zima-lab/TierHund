@@ -2,7 +2,7 @@
    Icone, stato salvato, ricerca, schede, Casa, Preferiti, tabella dei numeri, navigazione.
    Il ripasso (flashcard, quiz, simulazione) è in js/ripasso.js. */
 
-const APP_VERSION = "v2 · 23.11.2026";
+const APP_VERSION = "v3 · 24.11.2026";
 // Esame: marzo 2027, giorno non ancora fissato. Quando c'è la data: metterla qui e impostare EXAM_DAY_KNOWN = true.
 const EXAM_DATE = new Date("2027-03-01T10:30:00+01:00");
 const EXAM_DAY_KNOWN = false;
@@ -294,7 +294,7 @@ function renderHome(){
         <div class="stat"><b>${qs.wrong}</b><span>errori da rifare</span></div>
         <div class="stat"><b>${qs.last == null ? "–" : qs.last + " %"}</b><span>ultima simulazione</span></div>
       </div>
-      <div class="qactions" style="justify-content:flex-start"><button class="btn" id="goSim">Simulazione d'esame</button><button class="btn ghost" id="goRip">Flashcard e allenamento</button></div>
+      <div class="qactions" style="justify-content:flex-start">${typeof wsDueCount === "function" ? `<button class="btn" id="goWs">Wortschatz · ${wsDueCount()} oggi</button>` : ""}<button class="btn" id="goSim">Simulazione d'esame</button><button class="btn ghost" id="goRip">Flashcard e allenamento</button></div>
     </div>
     <div class="panel">
       <h2>${ic("star")}Scheda del giorno</h2>
@@ -303,7 +303,7 @@ function renderHome(){
     ${recent.length ? `<div class="panel"><h2>${ic("clock")}Ultime consultate</h2><div class="recent">${recent.map(id => `<button data-id="${id}">${esc(BY_ID[id].t === "zahl" ? BY_ID[id].v + " · " + BY_ID[id].de : BY_ID[id].de)}</button>`).join("")}</div></div>` : ""}
     <div class="panel">
       <h2>${ic("export")}Backup dei progressi</h2>
-      <p class="small" style="margin:0 0 10px">Preferiti, errori del quiz e flashcard restano solo in questo browser. Esporta un file per spostarli su un altro dispositivo.</p>
+      <p class="small" style="margin:0 0 10px">Preferiti, errori del quiz, flashcard e Wortschatz restano solo in questo browser. Esporta un file per spostarli su un altro dispositivo.</p>
       <div class="backup"><button class="btn ghost" id="bkExp">${ic("export")} Esporta</button><label class="btn ghost" style="display:inline-flex;align-items:center;gap:6px">${ic("import")} Importa<input type="file" id="bkImp" accept="application/json" hidden></label></div>
     </div>`;
   $("v-home").querySelectorAll(".mod-tile").forEach(b => b.addEventListener("click", () => { activeMod = b.dataset.m; activeType = "tutti"; openId = null; showLimit = 60; switchTab("cerca"); }));
@@ -312,6 +312,7 @@ function renderHome(){
   $("v-home").querySelectorAll(".recent button").forEach(b => b.addEventListener("click", () => openEntry(b.dataset.id)));
   $("goSim").addEventListener("click", () => { if(typeof startSim === "function") startSim(); });
   $("goRip").addEventListener("click", () => switchTab("ripasso"));
+  const gw = $("goWs"); if(gw) gw.addEventListener("click", () => { if(wsDueCount()) wsStartToday(); else switchTab("ripasso"); });
   bindEntries($("dailyHost"));
   $("bkExp").addEventListener("click", exportBackup);
   $("bkImp").addEventListener("change", importBackup);
@@ -403,7 +404,7 @@ function applyTheme(t){
 function init(){
   paintIcons();
   $("logo").innerHTML = ic("paw", "paw");
-  $("appVersion").textContent = "TierHund " + APP_VERSION + " · " + ENTRIES.length + " schede · " + (typeof QUIZ !== "undefined" ? QUIZ.length : 0) + " domande";
+  $("appVersion").textContent = "TierHund " + APP_VERSION + " · " + ENTRIES.length + " schede · " + (typeof WORTSCHATZ !== "undefined" ? WORTSCHATZ.length + " termini · " : "") + (typeof QUIZ !== "undefined" ? QUIZ.length : 0) + " domande";
   let theme = store.get("theme_v", null);
   if(!theme) theme = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
   applyTheme(theme);

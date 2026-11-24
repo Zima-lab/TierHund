@@ -72,7 +72,6 @@ button { font: inherit; color: inherit; }
 .wrap { max-width: 900px; margin: 0 auto; padding: 16px 16px 60px; }
 @media (min-width: 560px){ .wrap { padding: 22px 20px 60px; } }
 .ic { width: 1.25em; height: 1.25em; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.18em; }
-.hidden { display: none !important; }
 .muted { color: var(--muted); }
 .small { font-size: var(--fs-xs); color: var(--muted); }
 mark { background: var(--amber-light); color: inherit; border-radius: 3px; padding: 0 1px; }
@@ -289,6 +288,7 @@ textarea { width: 100%; min-height: 110px; border: 1.5px solid var(--border); bo
 :root[data-theme="dark"] .fbtns .btn.no, :root[data-theme="dark"] .fbtns .btn.yes, :root[data-theme="dark"] .btn { color: #0d121c; }
 :root[data-theme="dark"] .btn.ghost { color: var(--navy); }
 :root[data-theme="dark"] .btn { background: var(--navy); }
+:root[data-theme="dark"] .btn.ghost { background: transparent; }
 
 /* ============ 12. NAVIGAZIONE ============ */
 .tabbar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 60; display: flex; gap: 2px; background: var(--card); border-top: 1px solid var(--border); padding: 6px max(10px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-right)); box-shadow: 0 -2px 12px rgba(15,23,42,.08); }
@@ -359,3 +359,24 @@ footer.note2 { margin-top: 26px; font-size: var(--fs-xs); color: var(--muted); b
   .sheet { max-width: 900px; height: auto; max-height: calc(100% - 48px); border-radius: 18px; }
   .overlay { align-items: center; }
 }
+
+/* ============ 14. WORTSCHATZ (js/wortschatz.js) ============ */
+.ws-card { border-top: 5px solid var(--mc); }
+.ws-it { font-family: var(--serif); font-size: var(--fs-3xl); line-height: 1.25; color: var(--navy-dark); margin: 8px 0 10px; }
+.ws-s { font-family: var(--serif); font-size: var(--fs-base); line-height: 1.5; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; margin-top: 4px; }
+.ws-si { font-style: italic; color: var(--muted); font-size: var(--fs-xs); margin: 4px 2px 0; line-height: 1.4; }
+.ws-gap { display: inline-block; min-width: 4.5em; border-bottom: 2px solid var(--amber); vertical-align: -2px; margin: 0 2px; }
+.ws-hit { color: var(--accent); }
+.ws-lbl { display: block; font-size: var(--fs-xs); color: var(--muted); font-weight: 700; margin: 14px 0 4px; }
+.ws-input { width: 100%; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 12px; font-family: var(--serif); font-size: 1.125rem; background: var(--surface-alt); color: var(--text); min-height: 46px; }
+.ws-input:focus { outline: none; border-color: var(--navy); background: var(--card); }
+.ws-input[readonly] { opacity: .8; }
+.ws-keys { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.ws-key { min-width: 40px; min-height: 40px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 8px; font-family: var(--serif); font-size: var(--fs-lg); cursor: pointer; }
+.ws-answer { margin-top: 12px; text-align: center; }
+.ws-de { font-family: var(--serif); font-size: var(--fs-2xl); font-weight: 700; color: var(--navy-dark); }
+.ws-pl { font-family: var(--serif); font-size: var(--fs-base); color: var(--muted); margin-top: 2px; }
+.ws-flag { margin-top: 8px; }
+.ws-wrong { display: grid; gap: 4px; font-family: var(--serif); }
+.linklike { background: none; border: none; padding: 0; margin-top: 10px; color: var(--navy); font-weight: 700; cursor: pointer; font-size: var(--fs-sm); text-align: left; }
+.hidden { display: none !important; }

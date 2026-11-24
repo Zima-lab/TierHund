@@ -1,5 +1,5 @@
 /* TierHund — js/ripasso.js
-   Tab «Ripasso»: quiz (simulazione d'esame, allenamento, errori) e flashcard delle schede.
+   Tab «Ripasso»: Wortschatz (js/wortschatz.js), quiz (simulazione d'esame, allenamento, errori) e flashcard delle schede.
    La logica del quiz è quella di esercizi/Quiz_Sachkunde.html (versione precedente), con le stesse domande (dati/quiz.js). */
 
 QUIZ.forEach((q, i) => { q.id = q.c + "-" + i; });
@@ -25,6 +25,7 @@ function renderRipasso(){
   const hist = qStore.hist.slice(-5).reverse();
   host.innerHTML = `
   <div class="home">
+    ${typeof wsPanelHtml === "function" ? wsPanelHtml() : ""}
     <div class="panel">
       <h2>${ic("exam")}Quiz d'esame</h2>
       <div class="stats" style="margin-bottom:12px">
@@ -63,6 +64,7 @@ function renderRipasso(){
     </div>
   </div>`;
 
+  if(typeof wsBind === "function") wsBind();
   const chips = $("qChips");
   chips.innerHTML = Object.keys(QUIZ_CATS).map(k => `<button class="chip${qSelected.has(k) ? " active" : ""}" data-k="${k}">${esc(QUIZ_CATS[k])}<span class="chip-n">${QUIZ.filter(q => q.c === k).length}</span></button>`).join("");
   chips.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => { const k = b.dataset.k; if(qSelected.has(k)) qSelected.delete(k); else qSelected.add(k); b.classList.toggle("active"); $("mTrain").disabled = !qSelected.size; }));

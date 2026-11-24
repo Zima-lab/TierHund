@@ -1,0 +1,25 @@
+# Rigenera il mazzo Anki (anki/TierHund_Wortschatz.apkg) ogni volta che cambia la lista dei termini.
+name: Mazzo Anki
+on:
+  push:
+    branches: [main]
+    paths: ["dati/wortschatz.js", "tools/genera_anki.py"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  anki:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install genanki
+      - run: python3 tools/genera_anki.py
+      - name: Salva il mazzo se è cambiato
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898732+github-actions[bot]@users.noreply.github.com"
+          git add anki/TierHund_Wortschatz.apkg
+          git diff --cached --quiet || (git commit -m "Mazzo Anki aggiornato" && git push)
